@@ -3,16 +3,18 @@ import Search from '../components/Search';
 import ShowResults, { State } from '../components/ShowResults';
 
 class Home extends Component {
-  // state: State = [{}];
+  stateArg: State = [{}];
+
   handleSetState = (state: State) => {
     this.setState(state);
+    this.stateArg = state;
   };
 
   render(): ReactNode {
     return (
       <>
         <Search handleSetState={this.handleSetState} />
-        <ShowResults currentState={this.state} />
+        <ShowResults currentState={this.stateArg} />
       </>
     );
   }

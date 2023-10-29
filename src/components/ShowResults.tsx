@@ -14,7 +14,11 @@ interface PropType {
   currentState: State;
 }
 
-class ShowResults extends Component<PropType, Record<string, never>> {
+interface StateType {
+  stateValue?: State;
+}
+
+class ShowResults extends Component<PropType, StateType> {
   resultSectionClass = 'apiCallResults';
 
   render(): ReactNode {
