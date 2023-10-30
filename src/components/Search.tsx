@@ -4,6 +4,7 @@ import { State } from './ShowResults';
 
 interface PropType {
   handleSetState: (state: State) => void;
+  handleBeginLoad: () => void;
 }
 
 class Search extends Component<PropType, Record<string, never>> {
@@ -18,7 +19,8 @@ class Search extends Component<PropType, Record<string, never>> {
   baseUrl = 'https://swapi.dev/api/';
 
   private onSearch = () => {
-    const { handleSetState } = this.props;
+    const { handleSetState, handleBeginLoad } = this.props;
+    handleBeginLoad();
     const input: HTMLInputElement = document.querySelector(`.${this.searchInputClass}`)!;
     const inputValue = input.value;
     const select: HTMLSelectElement = document.querySelector(`.${this.searchOptionClass}`)!;

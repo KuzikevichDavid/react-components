@@ -4,15 +4,28 @@ import TestErrorBoundary from '../components/TestErrorBoundary';
 import Search from '../components/Search';
 import ShowResults, { State } from '../components/ShowResults';
 
-class Home extends Component {
-  stateArg: State = [{}];
+interface StateType {
+  stateValue?: State;
+  isLoad?: boolean;
+}
+
+class Home extends Component<Record<string, never>, StateType> {
+  constructor(props: Record<string, never> | Readonly<Record<string, never>>) {
+    super(props);
+
+    this.state = { isLoad: false };
+  }
 
   handleSetState = (state: State) => {
-    this.setState(state);
-    this.stateArg = state;
+    this.setState({ stateValue: state, isLoad: false });
+  };
+
+  handleBeginLoad = () => {
+    this.setState({ isLoad: true });
   };
 
   render(): ReactNode {
+    const { stateValue, isLoad } = this.state;
     return (
       <ErrorBoundary
         fallback={
@@ -25,8 +38,8 @@ class Home extends Component {
         }
       >
         <TestErrorBoundary />
-        <Search handleSetState={this.handleSetState} />
-        <ShowResults currentState={this.stateArg} />
+        <Search handleSetState={this.handleSetState} handleBeginLoad={this.handleBeginLoad} />
+        {isLoad ? <section>Loading...</section> : <ShowResults currentState={stateValue} />}
       </ErrorBoundary>
     );
   }
