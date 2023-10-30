@@ -15,8 +15,13 @@ class Search extends Component<PropType, Record<string, never>> {
   searchBtnClass = 'section-search__btn-search';
 
   storageKey = 'searchStartValue';
+  storageAPIKey = 'selectedSearchAPI';
 
   baseUrl = 'https://swapi.dev/api/';
+
+  componentDidMount() {
+    this.onSearch();
+  }
 
   private onSearch = () => {
     const { handleSetState, handleBeginLoad } = this.props;
@@ -27,6 +32,7 @@ class Search extends Component<PropType, Record<string, never>> {
     const selectValue = select.value;
 
     localStorage.setItem(this.storageKey, inputValue);
+    localStorage.setItem(this.storageAPIKey, selectValue);
 
     const seachArg = inputValue ? `?search=${inputValue}` : '';
 
@@ -38,10 +44,11 @@ class Search extends Component<PropType, Record<string, never>> {
 
   render(): ReactNode {
     const inputStartValue = localStorage.getItem(this.storageKey) ?? '';
+    const apiStartValue = localStorage.getItem(this.storageAPIKey) ?? 'people';
 
     return (
       <section className="section-search">
-        <select className={this.searchOptionClass} defaultValue="people">
+        <select className={this.searchOptionClass} defaultValue={apiStartValue}>
           <option value="people">people</option>
           <option value="planets">planets</option>
           <option value="films">films</option>

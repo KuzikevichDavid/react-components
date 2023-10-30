@@ -2,6 +2,4 @@ import ReactDOM from 'react-dom/client';
 import RoutedApp from './App';
 import './index.css';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <RoutedApp />
-);
+ReactDOM.createRoot(document.getElementById('root')!).render(<RoutedApp />);
