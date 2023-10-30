@@ -1,4 +1,6 @@
 import { Component, ReactNode } from 'react';
+import ErrorBoundary from '../components/ErrorBoundary';
+import TestErrorBoundary from '../components/TestErrorBoundary';
 import Search from '../components/Search';
 import ShowResults, { State } from '../components/ShowResults';
 
@@ -12,10 +14,11 @@ class Home extends Component {
 
   render(): ReactNode {
     return (
-      <>
+      <ErrorBoundary fallback={<p>Something went wrong</p>}>
+        <TestErrorBoundary />
         <Search handleSetState={this.handleSetState} />
         <ShowResults currentState={this.stateArg} />
-      </>
+      </ErrorBoundary>
     );
   }
 }
