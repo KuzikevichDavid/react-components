@@ -14,7 +14,16 @@ class Home extends Component {
 
   render(): ReactNode {
     return (
-      <ErrorBoundary fallback={<p>Something went wrong</p>}>
+      <ErrorBoundary
+        fallback={
+          <>
+            <p>Something went wrong</p>
+            <button type="button" onClick={() => window.location.reload()}>
+              Refresh Page
+            </button>
+          </>
+        }
+      >
         <TestErrorBoundary />
         <Search handleSetState={this.handleSetState} />
         <ShowResults currentState={this.stateArg} />
