@@ -15,6 +15,7 @@ class Search extends Component<PropType, Record<string, never>> {
   searchBtnClass = 'section-search__btn-search';
 
   storageKey = 'searchStartValue';
+
   storageAPIKey = 'selectedSearchAPI';
 
   baseUrl = 'https://swapi.dev/api/';
