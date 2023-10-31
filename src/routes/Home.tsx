@@ -3,6 +3,7 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import TestErrorBoundary from '../components/TestErrorBoundary';
 import Search from '../components/Search';
 import ShowResults, { State } from '../components/ShowResults';
+import Loader from '../components/loader/Loader';
 
 interface StateType {
   stateValue?: State;
@@ -39,7 +40,7 @@ class Home extends Component<Record<string, never>, StateType> {
       >
         <TestErrorBoundary />
         <Search handleSetState={this.handleSetState} handleBeginLoad={this.handleBeginLoad} />
-        {isLoad ? <section>Loading...</section> : <ShowResults currentState={stateValue} />}
+        {isLoad ? <Loader /> : <ShowResults currentState={stateValue} />}
       </ErrorBoundary>
     );
   }
