@@ -4,7 +4,7 @@ import TestErrorBoundary from '../components/errorBoundary/TestErrorBoundary';
 import Search from '../components/search/Search';
 import ShowResults from '../components/ShowResults';
 import Loader from '../components/loader/Loader';
-import { Items } from '../components/apiResponseType';
+import { Items } from '../api/apiResponseType';
 
 function Home() {
   const [items, setItems] = useState<Items>();

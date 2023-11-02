@@ -23,6 +23,7 @@ module.exports = {
   plugins: ['react-refresh', 'prettier'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'react-hooks/exhaustive-deps': 0,
     'react/prefer-stateless-function': 0,
     'prettier/prettier': 2,
     'no-console': 0,

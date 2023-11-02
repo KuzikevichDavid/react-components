@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { Items, ResponceType } from '../apiResponseType';
+import { Items, ResponceType } from '../../api/apiResponseType';
+import { fetchApi } from '../../api/swapi';
 
 interface PropType {
   handleShowItems: (newItems: Items) => void;
@@ -13,8 +14,6 @@ const searchBtnClass = 'section-search__btn-search';
 
 const storageKey = 'searchStartValue';
 const storageAPIKey = 'selectedSearchAPI';
-
-const baseUrl = 'https://swapi.dev/api/';
 
 const inputStartValue = localStorage.getItem(storageKey) ?? '';
 const apiStartValue = localStorage.getItem(storageAPIKey) ?? 'people';
@@ -30,10 +29,7 @@ function Search({ handleShowItems, handleLoad, isLoad }: PropType) {
     localStorage.setItem(storageKey, inputValue);
     localStorage.setItem(storageAPIKey, selectValue);
 
-    const seachArg = inputValue ? `?search=${inputValue}` : '';
-
-    fetch(`${baseUrl}${selectValue}/${seachArg}`)
-      .then(async (val: Response) => val.json())
+    fetchApi(selectValue, inputValue)
       .then((data: ResponceType) => handleShowItems(data.results))
       .catch(console.log);
   }

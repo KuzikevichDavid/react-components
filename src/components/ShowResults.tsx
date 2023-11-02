@@ -1,4 +1,4 @@
-import { Items, Item } from './apiResponseType';
+import { Items, Item } from '../api/apiResponseType';
 
 const showedCount = 4;
 
