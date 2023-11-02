@@ -1,49 +1,29 @@
-import { Component, ReactNode } from 'react';
-import ErrorBoundary from '../components/ErrorBoundary';
-import TestErrorBoundary from '../components/TestErrorBoundary';
-import Search from '../components/Search';
-import ShowResults, { State } from '../components/ShowResults';
+import { useState } from 'react';
+import ErrorBoundary from '../components/errorBoundary/ErrorBoundary';
+import TestErrorBoundary from '../components/errorBoundary/TestErrorBoundary';
+import Search from '../components/search/Search';
+import ShowResults from '../components/ShowResults';
 import Loader from '../components/loader/Loader';
+import { Items } from '../components/apiResponseType';
 
-interface StateType {
-  stateValue?: State;
-  isLoad?: boolean;
-}
+function Home() {
+  const [items, setItems] = useState<Items>();
+  const [isLoad, setLoad] = useState(false);
 
-class Home extends Component<Record<string, never>, StateType> {
-  constructor(props: Record<string, never> | Readonly<Record<string, never>>) {
-    super(props);
-
-    this.state = { isLoad: false };
-  }
-
-  handleSetState = (state: State) => {
-    this.setState({ stateValue: state, isLoad: false });
+  const handleShowItems = (newItems: Items) => {
+    setLoad(false);
+    setItems(newItems);
   };
 
-  handleBeginLoad = () => {
-    this.setState({ isLoad: true });
-  };
+  const handleLoad = (newIsLoad: boolean) => setLoad(newIsLoad);
 
-  render(): ReactNode {
-    const { stateValue, isLoad } = this.state;
-    return (
-      <ErrorBoundary
-        fallback={
-          <>
-            <p>Something went wrong</p>
-            <button type="button" onClick={() => window.location.reload()}>
-              Refresh Page
-            </button>
-          </>
-        }
-      >
-        <TestErrorBoundary />
-        <Search handleSetState={this.handleSetState} handleBeginLoad={this.handleBeginLoad} />
-        {isLoad ? <Loader /> : <ShowResults currentState={stateValue} />}
-      </ErrorBoundary>
-    );
-  }
+  return (
+    <ErrorBoundary>
+      <TestErrorBoundary />
+      <Search handleShowItems={handleShowItems} handleLoad={handleLoad} isLoad={isLoad} />
+      {isLoad ? <Loader /> : <ShowResults resultItems={items} />}
+    </ErrorBoundary>
+  );
 }
 
 export default Home;

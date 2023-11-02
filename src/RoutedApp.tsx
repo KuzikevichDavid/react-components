@@ -1,15 +1,23 @@
-import { Component, ReactNode } from 'react';
-import { HashRouter } from 'react-router-dom';
-import App from './App';
+import { HashRouter, Route, Routes } from 'react-router-dom';
+import './App.css';
+import Home from './routes/Home';
+import NotFound from './routes/NotFound';
 
-class RoutedApp extends Component {
-  render(): ReactNode {
-    return (
-      <HashRouter>
-        <App />
-      </HashRouter>
-    );
-  }
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
+
+function RoutedApp() {
+  return (
+    <HashRouter>
+      <App />
+    </HashRouter>
+  );
 }
 
 export default RoutedApp;
