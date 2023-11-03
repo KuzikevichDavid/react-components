@@ -5,6 +5,13 @@ export interface ResponceType {
   results: Items;
 }
 
+export interface PagedResponseType {
+  page: number;
+  pageCount: number;
+  itemsPerPage: number;
+  results: Items;
+}
+
 export interface Item {
   name?: string;
   title?: string;
