@@ -1,4 +1,4 @@
-import { ResponceType } from "./apiResponseType";
+import { ResponceType } from './apiResponseType';
 
 const baseUrl = 'https://swapi.dev/api/';
 
@@ -8,15 +8,15 @@ export enum ApiEndpoints {
   films = 'films',
   species = 'species',
   vehicles = 'vehicles',
-  starships = 'starships'
+  starships = 'starships',
 }
 
 export const fetchApi = async (endpoint: string, search?: string) => {
-
   const seachArg = search ? `?search=${search}` : '';
 
   const response: ResponceType = await fetch(`${baseUrl}${endpoint}/${seachArg}`)
-    .then((val: Response) => val.json());
+    .then((val: Response) => val.json())
+    .then((parsedResponse: ResponceType) => parsedResponse);
 
-  return response
-}
+  return response;
+};
