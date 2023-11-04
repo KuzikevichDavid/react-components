@@ -1,6 +1,6 @@
 import { RequestType } from '../../actions/types';
-import { fetchApi } from '../../api/swapi';
-import { storageAPIKey, storageKey } from '../search/storageKeys';
+import { defaultPerPage, fetchPaged } from '../../api/swapi';
+import { starageItemsPerPageKey, storageAPIKey, storageKey } from '../search/storageKeys';
 
 export default async function searchLoader(args: RequestType) {
   console.log(args);
@@ -9,7 +9,9 @@ export default async function searchLoader(args: RequestType) {
   console.log('loader', request, params, context);
 
   const search = localStorage.getItem(storageKey) ?? '';
-  const apiendpoint = localStorage.getItem(storageAPIKey) ?? 'people';
+  const apiEndpoint = localStorage.getItem(storageAPIKey) ?? 'people';
+  const perPage = localStorage.getItem(starageItemsPerPageKey) ?? defaultPerPage;
+  const page = params.page ? +params.page : 1;
 
-  return fetchApi(apiendpoint, search);
+  return fetchPaged(apiEndpoint, page, +perPage, search);
 }

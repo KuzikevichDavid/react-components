@@ -27,5 +27,7 @@ module.exports = {
     'react/prefer-stateless-function': 0,
     'prettier/prettier': 2,
     'no-console': 0,
+    'no-await-in-loop': 0,
+    '@typescript-eslint/no-throw-literal': 0,
   },
 };

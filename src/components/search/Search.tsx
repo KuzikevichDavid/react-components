@@ -13,8 +13,6 @@ interface ParamType {
 }
 
 function Search({ startPage }: ParamType) {
-  console.log(startPage);
-
   return (
     <Form method="post" action={`/search/${startPage}`}>
       <select className={searchOptionClass} name="apiEnpoint" defaultValue={apiStartValue}>
@@ -32,6 +30,7 @@ function Search({ startPage }: ParamType) {
         defaultValue={inputStartValue}
         placeholder="Type seach query to API"
       />
+      <input type="hidden" name="formName" value="search" />
       <button type="submit" className={searchBtnClass}>
         <span>Search</span>
       </button>

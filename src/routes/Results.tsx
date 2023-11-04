@@ -1,11 +1,18 @@
 import { useLoaderData } from 'react-router-dom';
 import ShowResults from '../components/ShowResults';
-import { ResponceType } from '../api/apiResponseType';
+import { PagedResponseType } from '../api/apiResponseType';
+import Pagination from '../components/pagination/Pagination';
 
 function Results() {
-  const { results }: ResponceType = useLoaderData();
+  const pagedResponce: PagedResponseType = useLoaderData();
+  const { results } = pagedResponce;
 
-  return <ShowResults resultItems={results} />;
+  return (
+    <>
+      <Pagination pagination={pagedResponce} />
+      <ShowResults resultItems={results} />
+    </>
+  );
 }
 
 export default Results;

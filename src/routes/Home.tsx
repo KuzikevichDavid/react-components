@@ -5,6 +5,7 @@ import Search from '../components/search/Search';
 
 function Home() {
   const navigation = useNavigation();
+
   return (
     <>
       <TestErrorBoundary />
