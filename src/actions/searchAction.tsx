@@ -5,7 +5,7 @@ import { RequestType } from './types';
 export default async function searchAction({ request, params, context }: RequestType) {
   console.log('action', request, params, context);
   const data = await request.formData();
-
+  console.log('Action ');
   const formData: Record<string, string> = Object.fromEntries<string>(data);
   console.log('formData', formData);
   if (formData.formName !== paginationFormName) {

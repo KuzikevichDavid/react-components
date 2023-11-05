@@ -36,6 +36,7 @@ export const fetchApi = async (endpoint: string, search?: string, page = 1) => {
 
   return response;
 };
+
 const throwNotFound = () => {
   throw json({ status: 404, statusText: 'Not found' });
 };
@@ -90,4 +91,12 @@ export const fetchPaged = async (
       }
     }
   return { page, pageCount: virtualPageCount, itemsPerPage: perPage, results: virtualResults };
+};
+
+export const fetchId = async (url: string) => {
+  const response: ResponceType = await fetch(url)
+    .then((val: Response) => val.json())
+    .then((parsedResponse: ResponceType) => parsedResponse);
+
+  return response;
 };

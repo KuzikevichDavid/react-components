@@ -1,14 +1,17 @@
-import { Items, Item } from '../api/apiResponseType';
+import { Form } from 'react-router-dom';
+import { PagedResponseType, Item } from '../api/apiResponseType';
+
+import ShowItem from './ShowItem';
 
 const showedCount = 4;
 
 interface PropType {
-  resultItems: Items;
+  response: Partial<PagedResponseType>;
 }
 
 const resultSectionClass = 'apiCallResults';
 
-function ShowResults({ resultItems }: PropType) {
+function ShowResults({ response: { page, results: resultItems } }: PropType) {
   if (resultItems) {
     const results = Object.entries(resultItems);
     if (results.length > 0) {
@@ -17,19 +20,16 @@ function ShowResults({ resultItems }: PropType) {
           {results.map(function a(mapVal: [string, Item]) {
             const [, val] = mapVal;
             return (
-              <div className="card" key={`${Math.random()}`}>
-                {Object.entries(val).map(function b(entry: [string, string], index: number) {
-                  if (index <= showedCount) {
-                    const [entryKey, value] = entry;
-                    return (
-                      <div className="obj-cart__property" key={`${Math.random()}`}>
-                        {entryKey}: {value}
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-              </div>
+              <Form
+                method="get"
+                className="card"
+                key={`${Math.random()}`}
+                action={`/search/${page}/${val.name ?? val.title}`}
+              >
+                <button type="submit">
+                  <ShowItem item={val} showedCount={showedCount} />
+                </button>
+              </Form>
             );
           })}
         </section>

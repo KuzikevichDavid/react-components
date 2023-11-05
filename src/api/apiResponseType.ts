@@ -16,6 +16,7 @@ export interface Item {
   name?: string;
   title?: string;
   model?: string;
+  url?: string;
 }
 
 export type Items = Item[];
