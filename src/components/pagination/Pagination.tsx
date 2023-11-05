@@ -1,5 +1,6 @@
-import { Form } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 import { PagedResponseType } from '../../api/apiResponseType';
+import { starageItemsPerPageKey } from '../search/storageKeys';
 import styles from './Pagination.module.css';
 
 interface PropType {
@@ -8,20 +9,26 @@ interface PropType {
 
 export const paginationFormName = 'paginationForm';
 
+const selectClassName = 'itemsPerPage';
+
 function Pagination({ pagination: { page, pageCount, itemsPerPage } }: PropType) {
-  function handleChangeItemsPerPage(e: Event) {
-    console.log(e);
+  const navigate = useNavigate();
+
+  function handleChangeItemsPerPage() {
+    const selectElement: HTMLSelectElement = document.querySelector(`.${selectClassName}`)!;
+    localStorage.setItem(starageItemsPerPageKey, selectElement.value);
+    navigate('../search/1');
   }
   const prevDisabled = page === 1;
   const nextDisabled = page === pageCount;
 
   return (
     <div className={styles['pagination-wrapper']}>
-      <Form method="post" action="/search/1" onSubmit={(e: Event) => handleChangeItemsPerPage(e)}>
+      <Form method="post" action="/search/1">
         <select
-          name="itemsPerPage"
+          className={selectClassName}
           defaultValue={itemsPerPage}
-          onChange={(e: Event) => handleChangeItemsPerPage(e)}
+          onChange={() => handleChangeItemsPerPage()}
         >
           <option value="5">5</option>
           <option value="10">10</option>
