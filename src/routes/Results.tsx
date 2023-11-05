@@ -37,7 +37,11 @@ function Results() {
     <>
       <Pagination pagination={pagedResponce} />
       <div className={styles[resultWrapperClass]}>
-        <div className={styles[resultsClass]} onClickCapture={(e: Event) => handleClose(e)}>
+        <div
+          className={styles[resultsClass]}
+          onClickCapture={(e: Event) => handleClose(e)}
+          title='"Main" section'
+        >
           <ShowResults response={pagedResponce} />
         </div>
 
@@ -46,7 +50,7 @@ function Results() {
             <Loader />
           </div>
         ) : (
-          <Outlet context={[isClose, setIsClose]} />
+          <Outlet context={{ isClose, setIsClose }} />
         )}
       </div>
     </>

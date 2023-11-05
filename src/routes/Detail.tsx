@@ -28,7 +28,7 @@ function Detail() {
 
   const { results } = respose;
   return (
-    <div className={styles['datail-wrapper']}>
+    <div className={styles['datail-wrapper']} title='"Detail" section'>
       <h2>detail</h2>
       <button type="button" onClick={() => handleClose()}>
         <span>Close</span>
