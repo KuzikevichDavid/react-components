@@ -1,4 +1,5 @@
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
+import Fallback from './Fallback';
 
 interface ErrorData {
   message: string;
@@ -16,7 +17,7 @@ function MyError() {
   if (isRouteErrorResponse(error)) {
     return (
       <div>
-        <h1>Oops! We’ve got a problem.</h1>
+        <Fallback />
         <h2>{error.status}</h2>
         <p>{error.statusText}</p>
         {error.data?.message && <p>{error.data.message}</p>}
@@ -24,7 +25,9 @@ function MyError() {
     );
   }
   console.log(error);
-  return <div>Oops</div>;
+  return (<div>
+    <Fallback />
+  </div>);
 }
 
 export default MyError;

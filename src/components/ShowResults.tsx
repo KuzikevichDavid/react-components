@@ -1,5 +1,8 @@
+import { useContext } from 'react';
 import { Form } from 'react-router-dom';
 import { PagedResponseType, Item } from '../api/apiResponseType';
+import SearchContext from '../contexts/SearchContext';
+import { RoutePath } from '../routePath';
 
 import ShowItem from './ShowItem';
 
@@ -11,7 +14,14 @@ interface PropType {
 
 const resultSectionClass = 'apiCallResults';
 
-function ShowResults({ response: { page, results: resultItems } }: PropType) {
+function ShowResults(/* { response: { page, results: resultItems } }: PropType */) {
+
+  const { response: [{ page, results: resultItems }],
+    endpoint: [enpoint] } = useContext(SearchContext)
+
+
+  const serachPath = `${enpoint}/${RoutePath.Search}`
+
   if (resultItems) {
     const results = Object.entries(resultItems);
     if (results.length > 0) {
@@ -24,7 +34,7 @@ function ShowResults({ response: { page, results: resultItems } }: PropType) {
                 method="get"
                 className="card"
                 key={`${Math.random()}`}
-                action={`/search/${page}/${val.name ?? val.title}`}
+                action={`/${serachPath}/${page}/${val.name ?? val.title}`}
               >
                 <button type="submit">
                   <ShowItem item={val} showedCount={showedCount} />
