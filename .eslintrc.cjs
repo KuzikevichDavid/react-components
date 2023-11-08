@@ -30,4 +30,10 @@ module.exports = {
     'no-await-in-loop': 0,
     '@typescript-eslint/no-throw-literal': 0,
   },
+  settings: {
+    react: {
+      pragma: 'React',
+      version: 'detect',
+    },
+  },
 };
