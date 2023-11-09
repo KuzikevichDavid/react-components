@@ -1,32 +1,30 @@
 import { useContext } from 'react';
 import { Form, useNavigate } from 'react-router-dom';
-import { PagedResponseType } from '../../api/apiResponseType';
 import SearchContext from '../../contexts/SearchContext';
-import { RoutePath } from '../../routePath';
+import RoutePath from '../../routePath';
 import { storageItemsPerPageKey } from '../search/storageKeys';
 import styles from './Pagination.module.css';
-
-interface PropType {
-  pagination: PagedResponseType;
-}
 
 export const paginationFormName = 'paginationForm';
 
 const selectClassName = 'itemsPerPage';
 
-function Pagination(/* { pagination: { page, pageCount, itemsPerPage } }: PropType */) {
-  const navigate = useNavigate();
-  // const {  } 
-  const { response: [{ page, pageCount, itemsPerPage }],
-    endpoint: [enpoint],
-    perPage: [, setPerPage] } = useContext(SearchContext)
+const method = 'post';
 
-  const serachPath = `${enpoint}/${RoutePath.Search}`
+function Pagination() {
+  const navigate = useNavigate();
+  const {
+    response: [{ page, pageCount, itemsPerPage }],
+    endpoint: [enpoint],
+    perPage: [, setPerPage],
+  } = useContext(SearchContext);
+
+  const serachPath = `${enpoint}/${RoutePath.Search}`;
 
   function handleChangeItemsPerPage(e: Event) {
-    const selectElement = e.target as HTMLSelectElement
+    const selectElement = e.target as HTMLSelectElement;
     localStorage.setItem(storageItemsPerPageKey, selectElement.value);
-    setPerPage(+selectElement.value)
+    setPerPage(+selectElement.value);
     navigate(`../${serachPath}/1`);
   }
   const prevDisabled = page === 1;
@@ -34,7 +32,7 @@ function Pagination(/* { pagination: { page, pageCount, itemsPerPage } }: PropTy
 
   return (
     <div className={styles['pagination-wrapper']}>
-      <Form method="post" action={`${serachPath}/1`}>
+      <Form method={method} action={`${serachPath}/1`}>
         <select
           className={selectClassName}
           defaultValue={itemsPerPage}
@@ -45,13 +43,13 @@ function Pagination(/* { pagination: { page, pageCount, itemsPerPage } }: PropTy
           <option value="15">15</option>
         </select>
       </Form>
-      <Form method="post" action={`/${serachPath}/1`}>
+      <Form method={method} action={`/${serachPath}/1`}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={prevDisabled}>
           {'<<'}
         </button>
       </Form>
-      <Form method="post" action={`/${serachPath}/${page - 1}`}>
+      <Form method={method} action={`/${serachPath}/${page - 1}`}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={prevDisabled}>
           {'<'}
@@ -60,13 +58,13 @@ function Pagination(/* { pagination: { page, pageCount, itemsPerPage } }: PropTy
       <button type="button" disabled>
         {page}
       </button>
-      <Form method="post" action={`/${serachPath}/${page + 1}`}>
+      <Form method={method} action={`/${serachPath}/${page + 1}`}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={nextDisabled}>
           {'>'}
         </button>
       </Form>
-      <Form method="post" action={`/${serachPath}/${pageCount}`}>
+      <Form method={method} action={`/${serachPath}/${pageCount}`}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={nextDisabled}>
           {'>>'}

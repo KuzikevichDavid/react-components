@@ -1,12 +1,8 @@
 import { RequestType } from '../../actions/types';
 import { fetchApi } from '../../api/swapi';
-import { storageAPIKey } from '../search/storageKeys';
 
-export default async function detailLoader({ params, context }: RequestType) {
-  console.log('detailLoader', context);
-  console.log(params);
+export default async function detailLoader({ params }: RequestType) {
+  console.log('detailLoader', params);
 
-  const apiEndpoint = localStorage.getItem(storageAPIKey) ?? 'people';
-
-  return fetchApi(apiEndpoint, params.detail);
+  return fetchApi(params.endpoint, params.detail);
 }

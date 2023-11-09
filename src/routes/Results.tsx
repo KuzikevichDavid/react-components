@@ -7,13 +7,11 @@ import styles from './Results.module.css';
 import detailStyles from './Detail.module.css';
 import Loader from '../components/loader/Loader';
 import SearchContext from '../contexts/SearchContext';
-import { RoutePath } from '../routePath';
+import RoutePath from '../routePath';
 
 const resultWrapperClass = 'results-wrapper';
 
 export const resultsClass = 'results';
-
-// const detailFullPath = ':endpoint/search/:page/:detail'
 
 function Results() {
   const location = useLocation();
@@ -22,11 +20,9 @@ function Results() {
     ? matchPath(RoutePath.DetailFullPath, navigation.location.pathname)
     : null;
   const isDetailLoad = !!isDetailPath;
-  // const pagedResponce: PagedResponseType = useLoaderData<PagedResponseType>();
-  // const [pagedResponse, setResponse] = useState<PagedResponseType>(useLoaderData());
+
   const context = useContext(SearchContext);
   context.response = useState<PagedResponseType>(useLoaderData());
-  console.log(location);
 
   const [isClose, setIsClose] = useState(false);
 

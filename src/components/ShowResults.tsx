@@ -1,26 +1,21 @@
 import { useContext } from 'react';
 import { Form } from 'react-router-dom';
-import { PagedResponseType, Item } from '../api/apiResponseType';
+import { Item } from '../api/apiResponseType';
 import SearchContext from '../contexts/SearchContext';
-import { RoutePath } from '../routePath';
-
+import RoutePath from '../routePath';
 import ShowItem from './ShowItem';
 
 const showedCount = 4;
 
-interface PropType {
-  response: Partial<PagedResponseType>;
-}
-
 const resultSectionClass = 'apiCallResults';
 
-function ShowResults(/* { response: { page, results: resultItems } }: PropType */) {
+function ShowResults() {
+  const {
+    response: [{ page, results: resultItems }],
+    endpoint: [enpoint],
+  } = useContext(SearchContext);
 
-  const { response: [{ page, results: resultItems }],
-    endpoint: [enpoint] } = useContext(SearchContext)
-
-
-  const serachPath = `${enpoint}/${RoutePath.Search}`
+  const serachPath = `${enpoint}/${RoutePath.Search}`;
 
   if (resultItems) {
     const results = Object.entries(resultItems);

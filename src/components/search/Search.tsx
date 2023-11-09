@@ -1,5 +1,5 @@
-import { SelectHTMLAttributes, useContext, useState } from 'react';
-import { Form, useSubmit } from 'react-router-dom';
+import { useContext } from 'react';
+import { Form } from 'react-router-dom';
 import SearchContext from '../../contexts/SearchContext';
 import { storageAPIKey, storageKey } from './storageKeys';
 
@@ -7,43 +7,32 @@ const searchInputClass = 'section-search__input';
 const searchOptionClass = 'section-search__select';
 const searchBtnClass = 'section-search__btn-search';
 
-// const inputStartValue = localStorage.getItem(storageKey) ?? '';
-// const apiStartValue = localStorage.getItem(storageAPIKey) ?? 'people';
+const startPage = 1;
 
-interface ParamType {
-  startPage: number;
-}
+function Search() {
+  const {
+    endpoint: [selectedApi, setSelectedApi],
+    search: [searchText, setSearchText],
+  } = useContext(SearchContext);
 
-function Search({ startPage }: ParamType) {
-  const { endpoint: [selectedApi, setSelectedApi],
-    search: [searchText, setSearchText] } = useContext(SearchContext)
-  const submit = useSubmit();
-  // const select: SelectHTMLAttributes = 
   const handleSelectApi = (e: Event) => {
-    const select = e.target as HTMLSelectElement
-    setSelectedApi(select.value)
-  }
+    const select = e.target as HTMLSelectElement;
+    localStorage.setItem(storageAPIKey, select.value);
+    setSelectedApi(select.value);
+  };
 
   const handleSeachText = (e: Event) => {
-    const input = e.target as HTMLInputElement
-    setSearchText(input.value)
-  }
-
-  const handleSubmit = (e: Event) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-
-    submit(formData, {
-      method: "post",
-      action: `${selectedApi}/search/${startPage}`,
-    })
-  }
+    const input = e.target as HTMLInputElement;
+    localStorage.setItem(storageKey, input.value);
+    setSearchText(input.value);
+  };
 
   return (
-    <Form method="post" /* action={`/search/${startPage}`} */
-      onSubmit={(e: Event) => { handleSubmit(e) }}>
-      <select className={searchOptionClass} name="apiEnpoint" defaultValue={selectedApi}
+    <Form method="get" action={`${selectedApi}/search/${startPage}`}>
+      <select
+        className={searchOptionClass}
+        name="apiEnpoint"
+        defaultValue={selectedApi}
         onChange={(e: Event) => handleSelectApi(e)}
       >
         <option value="people">people</option>
@@ -62,10 +51,10 @@ function Search({ startPage }: ParamType) {
         onChange={(e: Event) => handleSeachText(e)}
       />
       <input type="hidden" name="formName" value="search" />
-      <button type="submit" className={searchBtnClass} >
+      <button type="submit" className={searchBtnClass}>
         <span>Search</span>
       </button>
-    </Form >
+    </Form>
   );
 }
 

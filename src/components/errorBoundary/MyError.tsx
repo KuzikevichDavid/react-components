@@ -25,9 +25,11 @@ function MyError() {
     );
   }
   console.log(error);
-  return (<div>
-    <Fallback />
-  </div>);
+  return (
+    <div>
+      <Fallback />
+    </div>
+  );
 }
 
 export default MyError;
