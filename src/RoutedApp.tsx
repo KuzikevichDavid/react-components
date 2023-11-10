@@ -1,43 +1,8 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import detailAction from './actions/detailAction';
-import searchAction from './actions/searchAction';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
-import MyError from './components/errorBoundary/MyError';
-import detailLoader from './components/loader/detailLoader';
-import searchLoader from './components/loader/serachLoader';
-import RoutePath from './routePath';
-import Detail from './routes/Detail';
-import Home from './routes/Home';
-import NotFound from './routes/NotFound';
-import Results from './routes/Results';
+import routes from './router';
 
-const router = createBrowserRouter([
-  {
-    path: RoutePath.Home,
-    element: <Home />,
-    errorElement: <MyError />,
-    children: [
-      {
-        path: RoutePath.SearchFullPath,
-        action: searchAction,
-        loader: searchLoader,
-        element: <Results />,
-        children: [
-          {
-            path: RoutePath.Detatil,
-            action: detailAction,
-            loader: detailLoader,
-            element: <Detail />,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: '*',
-    element: <NotFound />,
-  },
-]);
+const router = createBrowserRouter(routes);
 
 function RoutedApp() {
   return <RouterProvider router={router} />;

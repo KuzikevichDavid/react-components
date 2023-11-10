@@ -13,6 +13,8 @@ const resultWrapperClass = 'results-wrapper';
 
 export const resultsClass = 'results';
 
+export const resultsTitle = '"Main" section';
+
 function Results() {
   const location = useLocation();
   const navigation = useNavigation();
@@ -42,7 +44,7 @@ function Results() {
         <div
           className={styles[resultsClass]}
           onClickCapture={(e: Event) => handleClose(e)}
-          title='"Main" section'
+          title={resultsTitle}
         >
           <ShowResults />
         </div>

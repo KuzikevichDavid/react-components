@@ -45,7 +45,7 @@ function Search() {
       <input
         className={searchInputClass}
         name="searchArg"
-        type="text"
+        type="search"
         defaultValue={searchText}
         placeholder="Type seach query to API"
         onChange={(e: Event) => handleSeachText(e)}
