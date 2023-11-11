@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import RoutedApp from '../RoutedApp';
-import { renderWithRouter } from './utils';
+import renderWithRouter from './utils';
 import { storageKey } from '../components/search/storageKeys';
 
 describe('app', () => {
@@ -30,6 +30,22 @@ describe('app', () => {
     const after = localStorage.getItem(storageKey);
     expect(searchArg).equals(after);
   });
+
+  it('"Search" input retrieves the seed from the local storage upon mounting', () => {
+    // ARRANGE
+    const searchArg = 'some test data';
+    localStorage.setItem(storageKey, searchArg);
+
+    // ACT
+    renderWithRouter();
+
+    // EXPECT
+    const elem: HTMLInputElement = screen.getByRole('searchbox');
+    console.log(elem);
+
+    const after = elem.defaultValue
+    expect(after).equals(searchArg);
+  })
 });
 
 describe('404', () => {
