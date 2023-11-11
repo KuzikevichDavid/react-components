@@ -1,25 +1,29 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import { isValidElement } from "react";
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import routes from '../router';
+import { createMemoryRouter, RouteObject, RouterProvider } from 'react-router-dom';
 
-const renderWithRouter = ({ route = '/' } = {}) => {
-  window.history.pushState({}, 'Test page', route);
+export async function fakeAction() {
+  return null;
+}
+
+const renderWithRouter = (children, routes: RouteObject[] = [], isChild = true) => {
+  const options = isValidElement(children)
+    ? { element: children, path: "/" }
+    : children;
+
+  const routeObj = isChild ? [{ ...options, children: [...routes] }] : [{ ...options }, ...routes]
+
+  const router = createMemoryRouter(routeObj, {
+    initialEntries: [options.path],
+    initialIndex: 1,
+  });
 
   return {
     user: userEvent.setup(),
-    ...render(
-      <RouterProvider
-        router={
-          // use <MemoryRouter> when you want to manually control the history
-          createMemoryRouter(routes, {
-            initialEntries: [route],
-          })
-        }
-      />
-    ),
-  };
+    ...render(<RouterProvider router={router} />)
+  }
 };
 
 export default renderWithRouter;

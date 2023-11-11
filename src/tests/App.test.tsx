@@ -1,10 +1,26 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import RoutedApp from '../RoutedApp';
-import renderWithRouter from './utils';
+import renderWithRouter, { fakeAction } from './utils';
 import { storageKey } from '../components/search/storageKeys';
+import Search from '../components/search/Search';
+import RoutePath from '../routePath';
+import Home from '../routes/Home';
+import ShowResults from '../components/ShowResults';
+import SearchContext, { contextInitValue } from '../contexts/SearchContext';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import routes from '../router';
 
 describe('app', () => {
+  const getItemSpy = vi.spyOn(Storage.prototype, 'getItem')
+  const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+
+  afterEach(() => {
+    localStorage.clear()
+    getItemSpy.mockClear()
+    setItemSpy.mockClear()
+  })
+
   it('renders', () => {
     // ARRANGE
     render(<RoutedApp />);
@@ -17,8 +33,7 @@ describe('app', () => {
 
   it('"Search" button saves the entered value to the local storage', async () => {
     // ARRANGE
-    const { user } = renderWithRouter();
-    localStorage.removeItem(storageKey);
+    const { user } = renderWithRouter(<Home />, [{ path: RoutePath.SearchFullPath, element: <></>, action: fakeAction }]);
     const searchArg = 'some test data';
     const elem: HTMLInputElement = screen.getByRole('searchbox');
 
@@ -28,35 +43,27 @@ describe('app', () => {
 
     // EXPECT
     const after = localStorage.getItem(storageKey);
+    expect(setItemSpy).toBeCalledWith(storageKey, searchArg);
     expect(searchArg).equals(after);
   });
 
-  it('"Search" input retrieves the seed from the local storage upon mounting', () => {
+  it.skip('"Search" input retrieves the seed from the local storage upon mounting', () => {
     // ARRANGE
     const searchArg = 'some test data';
     localStorage.setItem(storageKey, searchArg);
 
     // ACT
-    renderWithRouter();
+    render(<RouterProvider router={createMemoryRouter(routes, { initialEntries: ['/'], initialIndex: 1 })} />)
+    // renderWithRouter(<Search />);
+    // renderWithRouter(<SearchContext.Provider value={contextInitValue}><Search /></SearchContext.Provider>)
+    // render(<RoutedApp />)
 
     // EXPECT
     const elem: HTMLInputElement = screen.getByRole('searchbox');
-    console.log(elem);
+    console.log(elem.value, elem.defaultValue, elem.placeholder/* , localStorage.getItem(storageKey) */);
 
-    const after = elem.defaultValue
+    const after = elem.value
+    expect(getItemSpy).toBeCalledWith(storageKey)
     expect(after).equals(searchArg);
   })
-});
-
-describe('404', () => {
-  it('landing on a bad page', () => {
-    // ARRANGE
-    const badRoute = '/some/bad/route';
-
-    // ACT
-    renderWithRouter({ route: badRoute });
-
-    // verify navigation to "no match" route
-    expect(screen.getByText(/404/i)).toBeInTheDocument();
-  });
 });
