@@ -10,10 +10,12 @@ const searchBtnClass = 'section-search__btn-search';
 const startPage = 1;
 
 function Search() {
+  const context = useContext(SearchContext);
+
   const {
-    endpoint: [selectedApi, setSelectedApi],
+    endpoint: [selectedEndpoint, setSelectedApi],
     search: [searchText, setSearchText],
-  } = useContext(SearchContext);
+  } = context;
 
   const handleSelectApi = (e: Event) => {
     const select = e.target as HTMLSelectElement;
@@ -28,11 +30,11 @@ function Search() {
   };
 
   return (
-    <Form method="get" action={`${selectedApi}/search/${startPage}`}>
+    <Form method="post" action={`${selectedEndpoint}/search/${startPage}`}>
       <select
         className={searchOptionClass}
         name="apiEnpoint"
-        defaultValue={selectedApi}
+        defaultValue={selectedEndpoint}
         onChange={(e: Event) => handleSelectApi(e)}
       >
         <option value="people">people</option>

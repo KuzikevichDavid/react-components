@@ -1,5 +1,5 @@
 import { useLoaderData, Outlet, useNavigation, matchPath, useLocation } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ShowResults from '../components/ShowResults';
 import { PagedResponseType } from '../api/apiResponseType';
 import Pagination from '../components/pagination/Pagination';
@@ -23,8 +23,15 @@ function Results() {
     : null;
   const isDetailLoad = !!isDetailPath;
 
-  const context = useContext(SearchContext);
-  context.response = useState<PagedResponseType>(useLoaderData());
+  const {
+    response: [, setResponse],
+  } = useContext(SearchContext);
+
+  const data = useLoaderData() as PagedResponseType;
+
+  useEffect(() => {
+    setResponse(data);
+  }, [data]);
 
   const [isClose, setIsClose] = useState(false);
 
