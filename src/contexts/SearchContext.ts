@@ -29,11 +29,11 @@ export const getEmptyResponse = () => ({
 });
 
 export const contextInitValue: SearchContextType = {
-  endpoint: [endpoint, () => { }],
-  search: [search, () => { }],
-  perPage: [perPage, () => { }],
-  response: [getEmptyResponse(), () => { }],
-  detailClose: [false, () => { }]
+  endpoint: [endpoint, () => {}],
+  search: [search, () => {}],
+  perPage: [perPage, () => {}],
+  response: [getEmptyResponse(), () => {}],
+  detailClose: [false, () => {}],
 };
 
 const SearchContext = createContext<SearchContextType>(contextInitValue);

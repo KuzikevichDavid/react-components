@@ -25,7 +25,7 @@ function Results() {
 
   const {
     response: [, setResponse],
-    detailClose: [, setIsClose]
+    detailClose: [, setIsClose],
   } = useContext(SearchContext);
 
   const data = useLoaderData() as PagedResponseType;

@@ -30,11 +30,7 @@ describe('serach component tests', () => {
 
     // EXPECT
     const elem: HTMLInputElement = screen.getByRole('searchbox');
-    console.log(
-      elem.value,
-      elem.defaultValue,
-      elem.placeholder
-    );
+    console.log(elem.value, elem.defaultValue, elem.placeholder);
 
     const after = elem.value;
     expect(getItemSpy).toBeCalledWith(storageKey);

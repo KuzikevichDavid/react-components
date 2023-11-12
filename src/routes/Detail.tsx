@@ -14,7 +14,7 @@ function Detail() {
   const navigate = useNavigate();
   const respose: ResponceType = useLoaderData();
   const {
-    detailClose: [isClose, setIsClose]
+    detailClose: [isClose, setIsClose],
   } = useContext(SearchContext);
   function handleClose() {
     navigate('..');

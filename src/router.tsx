@@ -1,7 +1,5 @@
 import { RouteObject } from 'react-router-dom';
-import detailAction from './actions/detailAction';
 import searchAction from './actions/searchAction';
-import MyError from './components/errorBoundary/MyError';
 import detailLoader from './components/loader/detailLoader';
 import searchLoader from './components/loader/serachLoader';
 import RoutePath from './routePath';
@@ -14,7 +12,6 @@ const routes: RouteObject[] = [
   {
     path: RoutePath.Home,
     element: <Home />,
-    errorElement: <MyError />,
     children: [
       {
         path: RoutePath.SearchFullPath,
@@ -24,7 +21,6 @@ const routes: RouteObject[] = [
         children: [
           {
             path: RoutePath.Detatil,
-            action: detailAction,
             loader: detailLoader,
             element: <Detail />,
           },

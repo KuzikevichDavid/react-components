@@ -92,11 +92,3 @@ export const fetchPaged = async (
     }
   return { page, pageCount: virtualPageCount, itemsPerPage: perPage, results: virtualResults };
 };
-
-export const fetchId = async (url: string) => {
-  const response: ResponceType = await fetch(url)
-    .then((val: Response) => val.json())
-    .then((parsedResponse: ResponceType) => parsedResponse);
-
-  return response;
-};

@@ -59,7 +59,7 @@ describe('Card component tests', () => {
 
   it('Check that clicking triggers an additional API call to fetch detailed information', async () => {
     // ARRANGE
-    const loaderSpy = vi.fn((fakeDetailLoader));
+    const loaderSpy = vi.fn(fakeDetailLoader);
 
     const value = { ...contextInitValue };
     value.response[0] = loader(1);
