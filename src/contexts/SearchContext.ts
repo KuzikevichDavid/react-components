@@ -20,13 +20,18 @@ const search = localStorage.getItem(storageKey) ?? '';
 const endpoint = localStorage.getItem(storageAPIKey) ?? 'people';
 const perPage = +(localStorage.getItem(storageItemsPerPageKey) ?? defaultPerPage);
 
-export const getEmptyResponse = () => ({ results: [], itemsPerPage: perPage, page: 1, pageCount: 1 });
+export const getEmptyResponse = () => ({
+  results: [],
+  itemsPerPage: perPage,
+  page: 1,
+  pageCount: 1,
+});
 
 export const contextInitValue: SearchContextType = {
-  endpoint: [endpoint, () => { }],
-  search: [search, () => { }],
-  perPage: [perPage, () => { }],
-  response: [getEmptyResponse(), () => { }],
+  endpoint: [endpoint, () => {}],
+  search: [search, () => {}],
+  perPage: [perPage, () => {}],
+  response: [getEmptyResponse(), () => {}],
 };
 
 const SearchContext = createContext<SearchContextType>(contextInitValue);
