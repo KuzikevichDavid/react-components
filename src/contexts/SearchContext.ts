@@ -14,6 +14,7 @@ export interface SearchContextType {
   search: State<string>;
   perPage: State<number>;
   response: State<PagedResponseType>;
+  detailClose: State<boolean>;
 }
 
 const search = localStorage.getItem(storageKey) ?? '';
@@ -28,10 +29,11 @@ export const getEmptyResponse = () => ({
 });
 
 export const contextInitValue: SearchContextType = {
-  endpoint: [endpoint, () => {}],
-  search: [search, () => {}],
-  perPage: [perPage, () => {}],
-  response: [getEmptyResponse(), () => {}],
+  endpoint: [endpoint, () => { }],
+  search: [search, () => { }],
+  perPage: [perPage, () => { }],
+  response: [getEmptyResponse(), () => { }],
+  detailClose: [false, () => { }]
 };
 
 const SearchContext = createContext<SearchContextType>(contextInitValue);

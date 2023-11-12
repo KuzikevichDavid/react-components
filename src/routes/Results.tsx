@@ -1,5 +1,5 @@
 import { useLoaderData, Outlet, useNavigation, matchPath, useLocation } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import ShowResults from '../components/ShowResults';
 import { PagedResponseType } from '../api/apiResponseType';
 import Pagination from '../components/pagination/Pagination';
@@ -25,6 +25,7 @@ function Results() {
 
   const {
     response: [, setResponse],
+    detailClose: [, setIsClose]
   } = useContext(SearchContext);
 
   const data = useLoaderData() as PagedResponseType;
@@ -32,8 +33,6 @@ function Results() {
   useEffect(() => {
     setResponse(data);
   }, [data]);
-
-  const [isClose, setIsClose] = useState(false);
 
   function handleClose(e: Event) {
     if (matchPath(RoutePath.DetailFullPath, location.pathname)) {
@@ -61,7 +60,7 @@ function Results() {
             <Loader />
           </div>
         ) : (
-          <Outlet context={{ isClose, setIsClose }} />
+          <Outlet />
         )}
       </div>
     </>

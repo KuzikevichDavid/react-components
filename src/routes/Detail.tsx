@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
-import { useLoaderData, useNavigate, useOutletContext } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { ResponceType } from '../api/apiResponseType';
 import ShowItem from '../components/ShowItem';
+import SearchContext from '../contexts/SearchContext';
 import styles from './Detail.module.css';
 
 export interface ContextType {
@@ -12,7 +13,9 @@ export interface ContextType {
 function Detail() {
   const navigate = useNavigate();
   const respose: ResponceType = useLoaderData();
-  const { isClose, setIsClose } = useOutletContext<ContextType>();
+  const {
+    detailClose: [isClose, setIsClose]
+  } = useContext(SearchContext);
   function handleClose() {
     navigate('..');
   }

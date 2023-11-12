@@ -18,9 +18,10 @@ function ContextProvider({ children }: PropType) {
   const search = useState(startSearchText);
   const perPage = useState(startPerPage);
   const response = useState(startResponse);
+  const detailClose = useState(false);
 
   const contextValue: SearchContextType = useMemo<SearchContextType>(() => {
-    return { endpoint, search, perPage, response };
+    return { endpoint, search, perPage, response, detailClose };
   }, [endpoint, search, perPage, response]);
   return <SearchContext.Provider value={contextValue}>{children}</SearchContext.Provider>;
 }
