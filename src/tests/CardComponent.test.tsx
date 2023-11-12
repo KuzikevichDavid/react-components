@@ -8,19 +8,15 @@ import Results from '../routes/Results';
 import RoutePath from '../routePath';
 import Detail from '../routes/Detail';
 import { fakeDetailLoader } from './detailFakes';
-import ShowResults from '../components/ShowResults';
 
 const fakeLoader = () => loader(10);
 
-/* afterEach(() => {
+afterEach(() => {
   cleanup();
-
-  console.log('clean');
-
-}); */
+});
 
 describe('Card component tests', () => {
-  it.skip('card component renders the relevant card data', () => {
+  it('card component renders the relevant card data', () => {
     const item = cloneFakeItem();
     const showedCount = fakeItemFieldsCount;
 
@@ -37,17 +33,6 @@ describe('Card component tests', () => {
 
   it('Validate that clicking on a card opens a detailed card component', async () => {
     // ARRANGE
-    /* const value = { ...contextInitValue };
-    value.response[0] = loader(1);
-    const { user } = renderWithRouter(
-      <SearchContext.Provider value={value}>
-        <Results />
-      </SearchContext.Provider>,
-      [{
-        path: RoutePath.DetailFullPath, element: <Detail />, loader: fakeDetailLoader
-      }],
-      false
-    ); */
     const value = { ...contextInitValue };
     value.response[0] = loader(1);
     const { user } = renderWithRouter(
@@ -70,5 +55,33 @@ describe('Card component tests', () => {
 
     // EXPECT
     expect(screen.getByText('detail')).toBeInTheDocument();
+  });
+
+  it('Check that clicking triggers an additional API call to fetch detailed information', async () => {
+    // ARRANGE
+    const loaderSpy = vi.fn((fakeDetailLoader));
+
+    const value = { ...contextInitValue };
+    value.response[0] = loader(1);
+    const { user } = renderWithRouter(
+      <SearchContext.Provider value={value}>
+        <Results />
+      </SearchContext.Provider>,
+      [
+        {
+          path: RoutePath.DetailFullPath,
+          element: <Detail />,
+          loader: loaderSpy,
+        },
+      ],
+      fakeLoader,
+      false
+    );
+
+    // ACT
+    await user.click(screen.getByText(RegExp(fakeItem.name, 'm')));
+
+    // EXPECT
+    expect(loaderSpy).toBeCalled();
   });
 });

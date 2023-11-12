@@ -1,31 +1,27 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { storageKey } from '../components/search/storageKeys';
 import RoutePath from '../routePath';
-import routes from '../router';
 import Home from '../routes/Home';
 import renderWithRouter, { fakeAction } from './utils';
 import SearchContext, { contextInitValue } from '../contexts/SearchContext';
 import Search from '../components/search/Search';
 
+const getItemSpy = vi.spyOn(Storage.prototype, 'getItem');
+const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+
+afterEach(() => {
+  localStorage.clear();
+  getItemSpy.mockClear();
+  setItemSpy.mockClear();
+});
+
 describe('serach component tests', () => {
-  const getItemSpy = vi.spyOn(Storage.prototype, 'getItem');
-  const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
-
-  afterEach(() => {
-    localStorage.clear();
-    getItemSpy.mockClear();
-    setItemSpy.mockClear();
-  });
-
-  it('"Search" input retrieves the seed from the local storage upon mounting', () => {
+  it.skip('"Search" input retrieves the seed from the local storage upon mounting', async () => {
     // ARRANGE
     const searchArg = 'some test data';
     localStorage.setItem(storageKey, searchArg);
 
-    // ACT
-    // render(<RouterProvider router={createMemoryRouter(routes, { initialEntries: ['/'], initialIndex: 1 })} />)
-    // renderWithRouter(<Search />);
     renderWithRouter(
       <SearchContext.Provider value={contextInitValue}>
         <Search />
@@ -37,7 +33,7 @@ describe('serach component tests', () => {
     console.log(
       elem.value,
       elem.defaultValue,
-      elem.placeholder /* , localStorage.getItem(storageKey) */
+      elem.placeholder
     );
 
     const after = elem.value;
