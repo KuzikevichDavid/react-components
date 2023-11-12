@@ -8,7 +8,6 @@ import { fakeLoader } from './CardFakes';
 
 afterEach(() => {
   cleanup();
-  console.log('clean');
 });
 
 describe('Card List component', () => {
