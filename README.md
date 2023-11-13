@@ -3,6 +3,7 @@
 ## Description
 
 This project is a solution to the task [React .Components](https://github.com/rolling-scopes-school/tasks/tree/master/react/modules/module01) for the `React` course of the <a href="https://rs.school/react/">RSSchool</a>.
+
 # Start guide
 
 ## Prerequisites
@@ -19,11 +20,13 @@ git clone https://github.com/KuzikevichDavid/react-components.git
 ## Installing
 
 - install node modules
+
 ```
 npm install
 ```
 
 - install Husky
+
 ```
 npm run husky:prepare
 ```
@@ -31,21 +34,25 @@ npm run husky:prepare
 ## CLI Commands
 
 - Run linter for code check
+
 ```
 npm run lint
 ```
 
 - Run linter for code check with `--fix` flag
+
 ```
 npm run lint:fix
 ```
 
 - Run prettier for code check
+
 ```
 npm run format
 ```
 
 - Run prettier for format all files
+
 ```
 npm run format:fix
 ```
