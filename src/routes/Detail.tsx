@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { ResponceType } from '../api/apiResponseType';
 import ShowItem from '../components/ShowItem';
-import { closeDetail } from '../features/detailIsShowedSlice';
+import { closeDetail } from '../features/detailIsShowed/detailIsShowedSlice';
 import { detailSectionEndLoading } from '../features/loadingFlag/loadingFlagSlice';
+import { setResponse } from '../features/response/responceSlice';
 import { RootState } from '../store/store';
 import styles from './Detail.module.css';
 
@@ -15,11 +16,15 @@ export interface ContextType {
 
 function Detail() {
   const navigate = useNavigate();
-  const respose = useLoaderData() as ResponceType;
+  const loaderData = useLoaderData() as ResponceType;
 
   const dispatch = useDispatch();
 
-  const detailIsShowed = useSelector((state: RootState) => state.detailIsShowed);
+  const detailIsShowed = useSelector((state: RootState) => state.detailIsShowed.isShowed);
+
+  const response = useSelector((state: RootState) => state.detailResponse.response)
+
+  const { results } = response;
 
   function handleClose() {
     navigate('..');
@@ -37,8 +42,11 @@ function Detail() {
     };
   }, [detailIsShowed]);
 
-  const { results } = respose;
-  return (
+  useEffect(() => {
+    dispatch(setResponse(loaderData))
+  }, [loaderData])
+
+  return results.length ? (
     <div className={styles['datail-wrapper']} title='"Detail" section'>
       <h2>detail</h2>
       <button type="button" onClick={() => handleClose()}>
@@ -48,7 +56,7 @@ function Detail() {
         <ShowItem item={results[0]} showedCount={100} />
       </div>
     </div>
-  );
+  ) : null;
 }
 
 export default Detail;

@@ -9,7 +9,7 @@ import detailStyles from './Detail.module.css';
 import Loader from '../components/loader/Loader';
 import { RootState } from '../store/store';
 import { setPagedResponse } from '../features/response/pagedResponseSlice';
-import { closeDetail } from '../features/detailIsShowedSlice';
+import { closeDetail } from '../features/detailIsShowed/detailIsShowedSlice';
 
 const resultWrapperClass = 'results-wrapper';
 
@@ -23,7 +23,7 @@ function Results() {
 
   const data = useLoaderData() as PagedResponseType;
 
-  const detailIsShowed = useSelector((state: RootState) => state.detailIsShowed);
+  const detailIsShowed = useSelector((state: RootState) => state.detailIsShowed.isShowed);
 
   const loadingFlags = useSelector((state: RootState) => state.loadingFlags);
   const { detailSectionIsLoading, mainSectionIsLoading } = loadingFlags;

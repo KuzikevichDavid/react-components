@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initState = () => false;
+export interface DetailIsShowed {
+  isShowed: boolean;
+}
+
+const initState = (): DetailIsShowed => ({ isShowed: false });
 
 const detailIsShowedSlice = createSlice({
   name: 'detailClose',
@@ -8,13 +12,13 @@ const detailIsShowedSlice = createSlice({
   reducers: {
     closeDetail: {
       reducer: (state, action: PayloadAction<boolean>) => {
-        state = action.payload;
+        state.isShowed = action.payload;
       },
       prepare: () => ({ payload: false }),
     },
     openDetail: {
       reducer: (state, action: PayloadAction<boolean>) => {
-        state = action.payload;
+        state.isShowed = action.payload;
       },
       prepare: () => ({ payload: true }),
     },
