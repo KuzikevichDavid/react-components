@@ -1,8 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { ResponceType } from '../api/apiResponseType';
 import ShowItem from '../components/ShowItem';
-import SearchContext from '../contexts/SearchContext';
+import { closeDetail } from '../features/detailIsShowedSlice';
+import { detailSectionEndLoading } from '../features/loadingFlag/loadingFlagSlice';
+import { RootState } from '../store/store';
 import styles from './Detail.module.css';
 
 export interface ContextType {
@@ -12,22 +15,27 @@ export interface ContextType {
 
 function Detail() {
   const navigate = useNavigate();
-  const respose: ResponceType = useLoaderData();
-  const {
-    detailClose: [isClose, setIsClose],
-  } = useContext(SearchContext);
+  const respose = useLoaderData() as ResponceType;
+
+  const dispatch = useDispatch();
+
+  const detailIsShowed = useSelector((state: RootState) => state.detailIsShowed);
+
   function handleClose() {
     navigate('..');
   }
 
   useEffect(() => {
-    if (isClose) {
-      console.log('close');
+    dispatch(detailSectionEndLoading());
+    if (!detailIsShowed) {
+      console.log('closeDetail');
 
-      setIsClose(false);
       handleClose();
     }
-  }, [isClose]);
+    return () => {
+      dispatch(closeDetail());
+    };
+  }, [detailIsShowed]);
 
   const { results } = respose;
   return (

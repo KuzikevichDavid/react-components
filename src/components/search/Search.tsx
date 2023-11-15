@@ -1,7 +1,7 @@
-import { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-router-dom';
-import SearchContext from '../../contexts/SearchContext';
-import { storageAPIKey, storageKey } from './storageKeys';
+import { setEndpoint, setSearch } from '../../features/search/searchSlice';
+import { RootState } from '../../store/store';
 
 const searchInputClass = 'section-search__input';
 const searchOptionClass = 'section-search__select';
@@ -10,31 +10,27 @@ const searchBtnClass = 'section-search__btn-search';
 const startPage = 1;
 
 function Search() {
-  const context = useContext(SearchContext);
+  const dispatch = useDispatch();
 
-  const {
-    endpoint: [selectedEndpoint, setSelectedApi],
-    search: [searchText, setSearchText],
-  } = context;
+  const search = useSelector((state: RootState) => state.search);
+  const { searchText, endpoint } = search;
 
   const handleSelectApi = (e: Event) => {
     const select = e.target as HTMLSelectElement;
-    localStorage.setItem(storageAPIKey, select.value);
-    setSelectedApi(select.value);
+    dispatch(setEndpoint(select.value));
   };
 
   const handleSeachText = (e: Event) => {
     const input = e.target as HTMLInputElement;
-    localStorage.setItem(storageKey, input.value);
-    setSearchText(input.value);
+    dispatch(setSearch(input.value));
   };
 
   return (
-    <Form method="post" action={`${selectedEndpoint}/search/${startPage}`}>
+    <Form method="post" action={`${endpoint}/search/${startPage}`}>
       <select
         className={searchOptionClass}
         name="apiEnpoint"
-        defaultValue={selectedEndpoint}
+        defaultValue={endpoint}
         onChange={(e: Event) => handleSelectApi(e)}
       >
         <option value="people">people</option>

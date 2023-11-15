@@ -1,5 +1,5 @@
 import { paginationFormName } from '../components/pagination/Pagination';
-import { storageAPIKey, storageKey } from '../components/search/storageKeys';
+import { storageKey, storageAPIKey } from '../features/search/storageKeys';
 import { RequestType } from './types';
 
 export default async function searchAction({ request, params }: RequestType) {

@@ -1,9 +1,10 @@
-import { useContext } from 'react';
 import { Form, useNavigate } from 'react-router-dom';
-import SearchContext from '../../contexts/SearchContext';
+import { useDispatch, useSelector } from 'react-redux';
 import RoutePath from '../../routePath';
-import { storageItemsPerPageKey } from '../search/storageKeys';
 import styles from './Pagination.module.css';
+import { RootState } from '../../store/store';
+import { setItemsPerPage } from '../../features/search/searchSlice';
+import { mainSectionStartLoading } from '../../features/loadingFlag/loadingFlagSlice';
 
 export const paginationFormName = 'paginationForm';
 
@@ -13,19 +14,24 @@ const method = 'post';
 
 function Pagination() {
   const navigate = useNavigate();
-  const {
-    response: [{ page, pageCount, itemsPerPage }],
-    endpoint: [enpoint],
-    perPage: [, setPerPage],
-  } = useContext(SearchContext);
 
-  const serachPath = `${enpoint}/${RoutePath.Search}`;
+  const dispatch = useDispatch();
+
+  const endpoint = useSelector((state: RootState) => state.search.endpoint);
+  const pagedResponse = useSelector((state: RootState) => state.pagedResponse.response);
+  const { page, pageCount, itemsPerPage } = pagedResponse;
+
+  const serachPath = `${endpoint}/${RoutePath.Search}`;
 
   function handleChangeItemsPerPage(e: Event) {
     const selectElement = e.target as HTMLSelectElement;
-    localStorage.setItem(storageItemsPerPageKey, selectElement.value);
-    setPerPage(+selectElement.value);
+    dispatch(setItemsPerPage(+selectElement.value));
+    dispatch(mainSectionStartLoading());
     navigate(`../${serachPath}/1`);
+  }
+
+  function handleChangePage() {
+    dispatch(mainSectionStartLoading());
   }
   const prevDisabled = page === 1;
   const nextDisabled = page === pageCount;
@@ -43,13 +49,17 @@ function Pagination() {
           <option value="15">15</option>
         </select>
       </Form>
-      <Form method={method} action={`/${serachPath}/1`}>
+      <Form method={method} action={`/${serachPath}/1`} onSubmit={() => handleChangePage()}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={prevDisabled}>
           {'<<'}
         </button>
       </Form>
-      <Form method={method} action={`/${serachPath}/${page - 1}`}>
+      <Form
+        method={method}
+        action={`/${serachPath}/${page - 1}`}
+        onSubmit={() => handleChangePage()}
+      >
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={prevDisabled}>
           {'<'}
@@ -58,13 +68,21 @@ function Pagination() {
       <button type="button" disabled>
         {page}
       </button>
-      <Form method={method} action={`/${serachPath}/${page + 1}`}>
+      <Form
+        method={method}
+        action={`/${serachPath}/${page + 1}`}
+        onSubmit={() => handleChangePage()}
+      >
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={nextDisabled}>
           {'>'}
         </button>
       </Form>
-      <Form method={method} action={`/${serachPath}/${pageCount}`}>
+      <Form
+        method={method}
+        action={`/${serachPath}/${pageCount}`}
+        onSubmit={() => handleChangePage()}
+      >
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={nextDisabled}>
           {'>>'}

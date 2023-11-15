@@ -1,8 +1,10 @@
-import { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-router-dom';
 import { Item } from '../api/apiResponseType';
-import SearchContext from '../contexts/SearchContext';
+import { openDetail } from '../features/detailIsShowedSlice';
+import { detailSectionStartLoading } from '../features/loadingFlag/loadingFlagSlice';
 import RoutePath from '../routePath';
+import { RootState } from '../store/store';
 import ShowItem from './ShowItem';
 
 const showedCount = 4;
@@ -10,12 +12,18 @@ const showedCount = 4;
 const resultSectionClass = 'apiCallResults';
 
 function ShowResults() {
-  const {
-    response: [{ page, results: resultItems }],
-    endpoint: [enpoint],
-  } = useContext(SearchContext);
+  const dispatch = useDispatch();
 
-  const serachPath = `${enpoint}/${RoutePath.Search}`;
+  const endpoint = useSelector((state: RootState) => state.search.endpoint);
+  const pagedResponse = useSelector((state: RootState) => state.pagedResponse.response);
+  const { page, results: resultItems } = pagedResponse;
+
+  const serachPath = `${endpoint}/${RoutePath.Search}`;
+
+  function handleOpenDetail(): void {
+    dispatch(openDetail());
+    dispatch(detailSectionStartLoading());
+  }
 
   if (resultItems) {
     const results = Object.entries(resultItems);
@@ -30,6 +38,7 @@ function ShowResults() {
                 className="card"
                 key={`${Math.random()}`}
                 action={`/${serachPath}/${page}/${val.name ?? val.title}`}
+                onSubmit={() => handleOpenDetail()}
               >
                 <button type="submit">
                   <ShowItem item={val} showedCount={showedCount} />

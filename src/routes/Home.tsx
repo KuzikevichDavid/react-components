@@ -1,13 +1,14 @@
+import { Provider } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import Search from '../components/search/Search';
-import ContextProvider from '../contexts/ContextProvider';
+import { store } from '../store/store';
 
 function Home() {
   return (
-    <ContextProvider>
+    <Provider store={store}>
       <Search />
       <Outlet />
-    </ContextProvider>
+    </Provider>
   );
 }
 

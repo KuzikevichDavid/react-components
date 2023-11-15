@@ -1,13 +1,15 @@
-import { useLoaderData, Outlet, useNavigation, matchPath, useLocation } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useLoaderData, Outlet, useNavigation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ShowResults from '../components/ShowResults';
 import { PagedResponseType } from '../api/apiResponseType';
 import Pagination from '../components/pagination/Pagination';
 import styles from './Results.module.css';
 import detailStyles from './Detail.module.css';
 import Loader from '../components/loader/Loader';
-import SearchContext from '../contexts/SearchContext';
-import RoutePath from '../routePath';
+import { RootState } from '../store/store';
+import { setPagedResponse } from '../features/response/pagedResponseSlice';
+import { closeDetail } from '../features/detailIsShowedSlice';
 
 const resultWrapperClass = 'results-wrapper';
 
@@ -16,30 +18,27 @@ export const resultsClass = 'results';
 export const resultsTitle = '"Main" section';
 
 function Results() {
-  const location = useLocation();
   const navigation = useNavigation();
-  const isDetailPath = navigation.location?.pathname
-    ? matchPath(RoutePath.DetailFullPath, navigation.location.pathname)
-    : null;
-  const isDetailLoad = !!isDetailPath;
-
-  const {
-    response: [, setResponse],
-    detailClose: [, setIsClose],
-  } = useContext(SearchContext);
+  const dispatch = useDispatch();
 
   const data = useLoaderData() as PagedResponseType;
 
+  const detailIsShowed = useSelector((state: RootState) => state.detailIsShowed);
+
+  const loadingFlags = useSelector((state: RootState) => state.loadingFlags);
+  const { detailSectionIsLoading, mainSectionIsLoading } = loadingFlags;
+
   useEffect(() => {
-    setResponse(data);
+    dispatch(setPagedResponse(data));
   }, [data]);
 
   function handleClose(e: Event) {
-    if (matchPath(RoutePath.DetailFullPath, location.pathname)) {
+    if (detailIsShowed) {
       e.stopPropagation();
-      console.log('setclose');
 
-      setIsClose(true);
+      console.log('closeDetail');
+
+      dispatch(closeDetail());
     }
   }
 
@@ -52,10 +51,10 @@ function Results() {
           onClickCapture={(e: Event) => handleClose(e)}
           title={resultsTitle}
         >
-          <ShowResults />
+          {navigation.state === 'loading' && mainSectionIsLoading ? <Loader /> : <ShowResults />}
         </div>
 
-        {navigation.state === 'loading' && isDetailLoad ? (
+        {navigation.state === 'loading' && detailSectionIsLoading ? (
           <div className={detailStyles['datail-wrapper']}>
             <Loader />
           </div>
