@@ -18,8 +18,9 @@ function Pagination() {
   const dispatch = useDispatch();
 
   const endpoint = useSelector((state: RootState) => state.search.endpoint);
+  const itemsPerPage = useSelector((state: RootState) => state.search.perPage)
   const pagedResponse = useSelector((state: RootState) => state.pagedResponse.response);
-  const { page, pageCount, itemsPerPage } = pagedResponse;
+  const { page, pageCount } = pagedResponse;
 
   const serachPath = `${endpoint}/${RoutePath.Search}`;
 
@@ -38,7 +39,7 @@ function Pagination() {
 
   return (
     <div className={styles['pagination-wrapper']}>
-      <Form method={method} action={`${serachPath}/1`}>
+      <Form method={method} action={`/${serachPath}/1`}>
         <select
           className={selectClassName}
           defaultValue={itemsPerPage}

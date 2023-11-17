@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { swApi } from "../api/QueryArgs";
 import detailIsShowedSlice, { DetailIsShowed } from '../features/detailIsShowed/detailIsShowedSlice';
 import loadingFlagSlice, { LoadingFlags } from '../features/loadingFlag/loadingFlagSlice';
 import pagedResponseSlice, { PagedResponse } from '../features/response/pagedResponseSlice';
@@ -20,5 +21,9 @@ export const store = configureStore({
     pagedResponse: pagedResponseSlice,
     detailResponse: responseSlice,
     loadingFlags: loadingFlagSlice,
+    swapi: swApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(swApi.middleware),
 });
+
+export const { dispatch, getState } = store;
