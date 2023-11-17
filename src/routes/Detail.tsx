@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { ResponceType } from '../api/apiResponseType';
 import ShowItem from '../components/ShowItem';
-import { closeDetail } from '../features/detailIsShowed/detailIsShowedSlice';
-import { detailSectionEndLoading } from '../features/loadingFlag/loadingFlagSlice';
-import { setResponse } from '../features/response/responceSlice';
-import { RootState } from '../store/store';
+import { closeDetail } from '../store/reducers/detailIsShowed/detailIsShowedSlice';
+import { detailSectionEndLoading } from '../store/reducers/loadingFlag/loadingFlagSlice';
+import { setResponse } from '../store/reducers/response/responceSlice';
+import { RootState } from '../store/RootState';
 import styles from './Detail.module.css';
 
 export interface ContextType {
@@ -22,7 +22,7 @@ function Detail() {
 
   const detailIsShowed = useSelector((state: RootState) => state.detailIsShowed.isShowed);
 
-  const response = useSelector((state: RootState) => state.detailResponse.response)
+  const response = useSelector((state: RootState) => state.detailResponse.response);
 
   const { results } = response;
 
@@ -43,8 +43,8 @@ function Detail() {
   }, [detailIsShowed]);
 
   useEffect(() => {
-    dispatch(setResponse(loaderData))
-  }, [loaderData])
+    dispatch(setResponse(loaderData));
+  }, [loaderData]);
 
   return results.length ? (
     <div className={styles['datail-wrapper']} title='"Detail" section'>

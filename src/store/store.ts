@@ -1,18 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { swApi } from "../api/QueryArgs";
-import detailIsShowedSlice, { DetailIsShowed } from '../features/detailIsShowed/detailIsShowedSlice';
-import loadingFlagSlice, { LoadingFlags } from '../features/loadingFlag/loadingFlagSlice';
-import pagedResponseSlice, { PagedResponse } from '../features/response/pagedResponseSlice';
-import responseSlice, { DetailResponse } from '../features/response/responceSlice';
-import searchSlice, { Search } from '../features/search/searchSlice';
-
-export interface RootState {
-  search: Search;
-  detailIsShowed: DetailIsShowed;
-  pagedResponse: PagedResponse;
-  detailResponse: DetailResponse;
-  loadingFlags: LoadingFlags;
-}
+import { swApi } from './api/swapi';
+import detailIsShowedSlice from './reducers/detailIsShowed/detailIsShowedSlice';
+import loadingFlagSlice from './reducers/loadingFlag/loadingFlagSlice';
+import pagedResponseSlice from './reducers/response/pagedResponseSlice';
+import responseSlice from './reducers/response/responceSlice';
+import searchSlice from './reducers/search/searchSlice';
 
 export const store = configureStore({
   reducer: {
@@ -26,4 +18,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(swApi.middleware),
 });
 
-export const { dispatch, getState } = store;
+const dispatch = store.dispatch.bind(store);
+const getState = store.getState.bind(store);
+
+export { dispatch, getState };

@@ -2,9 +2,9 @@ import { Form, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import RoutePath from '../../routePath';
 import styles from './Pagination.module.css';
-import { RootState } from '../../store/store';
-import { setItemsPerPage } from '../../features/search/searchSlice';
-import { mainSectionStartLoading } from '../../features/loadingFlag/loadingFlagSlice';
+import { RootState } from '../../store/RootState';
+import { setItemsPerPage } from '../../store/reducers/search/searchSlice';
+import { mainSectionStartLoading } from '../../store/reducers/loadingFlag/loadingFlagSlice';
 
 export const paginationFormName = 'paginationForm';
 
@@ -18,7 +18,7 @@ function Pagination() {
   const dispatch = useDispatch();
 
   const endpoint = useSelector((state: RootState) => state.search.endpoint);
-  const itemsPerPage = useSelector((state: RootState) => state.search.perPage)
+  const itemsPerPage = useSelector((state: RootState) => state.search.perPage);
   const pagedResponse = useSelector((state: RootState) => state.pagedResponse.response);
   const { page, pageCount } = pagedResponse;
 

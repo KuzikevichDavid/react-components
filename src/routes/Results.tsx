@@ -7,9 +7,9 @@ import Pagination from '../components/pagination/Pagination';
 import styles from './Results.module.css';
 import detailStyles from './Detail.module.css';
 import Loader from '../components/loader/Loader';
-import { RootState } from '../store/store';
-import { setPagedResponse } from '../features/response/pagedResponseSlice';
-import { closeDetail } from '../features/detailIsShowed/detailIsShowedSlice';
+import { RootState } from '../store/RootState';
+import { setPagedResponse } from '../store/reducers/response/pagedResponseSlice';
+import { closeDetail } from '../store/reducers/detailIsShowed/detailIsShowedSlice';
 
 const resultWrapperClass = 'results-wrapper';
 

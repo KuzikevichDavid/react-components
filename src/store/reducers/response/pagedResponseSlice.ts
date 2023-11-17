@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { PagedResponseType } from '../../api/apiResponseType';
-import { defaultPerPage } from '../../api/swapi';
+import { PagedResponseType } from '../../../api/apiResponseType';
+import { defaultPerPage } from '../../../api/swapi';
 
 export interface PagedResponse {
   response: PagedResponseType;

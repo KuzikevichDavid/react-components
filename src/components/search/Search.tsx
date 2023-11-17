@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-router-dom';
-import { setEndpoint, setSearch } from '../../features/search/searchSlice';
-import { RootState } from '../../store/store';
+import { setEndpoint, setSearch } from '../../store/reducers/search/searchSlice';
+import { RootState } from '../../store/RootState';
 
 const searchInputClass = 'section-search__input';
 const searchOptionClass = 'section-search__select';

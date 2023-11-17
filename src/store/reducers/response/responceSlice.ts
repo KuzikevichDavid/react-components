@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ResponceType } from '../../api/apiResponseType';
+import { ResponceType } from '../../../api/apiResponseType';
 
 export interface DetailResponse {
   response: ResponceType;

@@ -1,8 +1,8 @@
 import { RequestType } from './types';
 
-const searchAction = async ({ request, params }: RequestType) => {
+const searchAction = ({ request, params }: RequestType) => {
   console.log('action', request, params);
   return null;
-}
+};
 
 export default searchAction;

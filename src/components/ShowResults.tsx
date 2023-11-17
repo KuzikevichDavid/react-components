@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-router-dom';
 import { Item } from '../api/apiResponseType';
-import { openDetail } from '../features/detailIsShowed/detailIsShowedSlice';
-import { detailSectionStartLoading } from '../features/loadingFlag/loadingFlagSlice';
+import { openDetail } from '../store/reducers/detailIsShowed/detailIsShowedSlice';
+import { detailSectionStartLoading } from '../store/reducers/loadingFlag/loadingFlagSlice';
 import RoutePath from '../routePath';
-import { RootState } from '../store/store';
+import { RootState } from '../store/RootState';
 import ShowItem from './ShowItem';
 
 const showedCount = 4;

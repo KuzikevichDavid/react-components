@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { screen } from '@testing-library/react';
-import { storageKey } from '../reducers/storageKeys';
+import { storageKey } from '../store/reducers/storageKeys';
 import RoutePath from '../routePath';
 import Home from '../routes/Home';
 import renderWithRouter, { fakeAction } from './utils';

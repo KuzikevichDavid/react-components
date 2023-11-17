@@ -1,7 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import searchAction from './actions/searchAction';
-import detailLoader from './components/loader/detailLoader';
-import searchLoader from './components/loader/serachLoader';
+import detailLoader from './loaders/detailLoader';
+import searchLoader from './loaders/serachLoader';
 import RoutePath from './routePath';
 import Detail from './routes/Detail';
 import Home from './routes/Home';

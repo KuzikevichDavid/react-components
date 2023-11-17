@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { defaultPerPage } from '../../api/swapi';
+import { defaultPerPage } from '../../../api/swapi';
 import { storageKey, storageAPIKey, storageItemsPerPageKey } from './storageKeys';
 
 export interface Search {

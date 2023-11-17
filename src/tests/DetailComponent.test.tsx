@@ -7,7 +7,7 @@ import renderWithRouter from './utils';
 import { fakeDetailLoader } from './detailFakes';
 import RoutePath from '../routePath';
 import Results from '../routes/Results';
-import detailLoader from '../components/loader/detailLoader';
+import detailLoader from '../loaders/detailLoader';
 
 global.fetch = vi.fn();
 
