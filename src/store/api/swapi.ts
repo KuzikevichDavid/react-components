@@ -2,6 +2,12 @@ import { BaseQueryApi, BaseQueryFn, createApi } from '@reduxjs/toolkit/query/rea
 import { PagedResponseType, ResponceType } from '../../api/apiResponseType';
 import { RootState } from '../RootState';
 import { fetchPaged, fetchApi } from '../../api/swapi';
+import {
+  detailSectionEndLoading,
+  detailSectionStartLoading,
+  mainSectionEndLoading,
+  mainSectionStartLoading,
+} from '../reducers/loadingFlag/loadingFlagSlice';
 
 interface QueryArgs {
   page?: number;
@@ -20,6 +26,7 @@ const customBaseQuery: BaseQueryFn = async (args: QueryArgs, api: BaseQueryApi) 
     const state = api.getState() as RootState;
     switch (api.endpoint) {
       case QueryEndpoints.FetchPaged:
+        api.dispatch(mainSectionStartLoading());
         return {
           data: await fetchPaged(
             args.endpoint,
@@ -29,6 +36,7 @@ const customBaseQuery: BaseQueryFn = async (args: QueryArgs, api: BaseQueryApi) 
           ),
         };
       case QueryEndpoints.FetchApi:
+        api.dispatch(detailSectionStartLoading());
         return { data: await fetchApi(args.endpoint, args.search ?? state.search.searchText) };
       default:
         return {
@@ -41,6 +49,9 @@ const customBaseQuery: BaseQueryFn = async (args: QueryArgs, api: BaseQueryApi) 
     }
   } catch (error) {
     return { error };
+  } finally {
+    api.dispatch(detailSectionEndLoading());
+    api.dispatch(mainSectionEndLoading());
   }
 };
 

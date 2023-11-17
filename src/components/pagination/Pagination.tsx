@@ -4,7 +4,6 @@ import RoutePath from '../../routePath';
 import styles from './Pagination.module.css';
 import { RootState } from '../../store/RootState';
 import { setItemsPerPage } from '../../store/reducers/search/searchSlice';
-import { mainSectionStartLoading } from '../../store/reducers/loadingFlag/loadingFlagSlice';
 
 export const paginationFormName = 'paginationForm';
 
@@ -27,12 +26,7 @@ function Pagination() {
   function handleChangeItemsPerPage(e: Event) {
     const selectElement = e.target as HTMLSelectElement;
     dispatch(setItemsPerPage(+selectElement.value));
-    dispatch(mainSectionStartLoading());
     navigate(`../${serachPath}/1`);
-  }
-
-  function handleChangePage() {
-    dispatch(mainSectionStartLoading());
   }
   const prevDisabled = page === 1;
   const nextDisabled = page === pageCount;
@@ -50,17 +44,13 @@ function Pagination() {
           <option value="15">15</option>
         </select>
       </Form>
-      <Form method={method} action={`/${serachPath}/1`} onSubmit={() => handleChangePage()}>
+      <Form method={method} action={`/${serachPath}/1`}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={prevDisabled}>
           {'<<'}
         </button>
       </Form>
-      <Form
-        method={method}
-        action={`/${serachPath}/${page - 1}`}
-        onSubmit={() => handleChangePage()}
-      >
+      <Form method={method} action={`/${serachPath}/${page - 1}`}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={prevDisabled}>
           {'<'}
@@ -69,21 +59,13 @@ function Pagination() {
       <button type="button" disabled>
         {page}
       </button>
-      <Form
-        method={method}
-        action={`/${serachPath}/${page + 1}`}
-        onSubmit={() => handleChangePage()}
-      >
+      <Form method={method} action={`/${serachPath}/${page + 1}`}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={nextDisabled}>
           {'>'}
         </button>
       </Form>
-      <Form
-        method={method}
-        action={`/${serachPath}/${pageCount}`}
-        onSubmit={() => handleChangePage()}
-      >
+      <Form method={method} action={`/${serachPath}/${pageCount}`}>
         <input type="hidden" name="formName" value={paginationFormName} />
         <button type="submit" disabled={nextDisabled}>
           {'>>'}

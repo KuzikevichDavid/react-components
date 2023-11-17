@@ -4,7 +4,6 @@ import { useLoaderData, useNavigate } from 'react-router-dom';
 import { ResponceType } from '../api/apiResponseType';
 import ShowItem from '../components/ShowItem';
 import { closeDetail } from '../store/reducers/detailIsShowed/detailIsShowedSlice';
-import { detailSectionEndLoading } from '../store/reducers/loadingFlag/loadingFlagSlice';
 import { setResponse } from '../store/reducers/response/responceSlice';
 import { RootState } from '../store/RootState';
 import styles from './Detail.module.css';
@@ -31,7 +30,6 @@ function Detail() {
   }
 
   useEffect(() => {
-    dispatch(detailSectionEndLoading());
     if (!detailIsShowed) {
       console.log('closeDetail');
 
