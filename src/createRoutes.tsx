@@ -7,8 +7,9 @@ import Detail from './routes/Detail';
 import Home from './routes/Home';
 import NotFound from './routes/NotFound';
 import Results from './routes/Results';
+import { AppDispatch, AppGetState } from './store/store';
 
-const routes: RouteObject[] = [
+const createRoutes = (dispatch: AppDispatch, getState: AppGetState): RouteObject[] => [
   {
     path: RoutePath.Home,
     element: <Home />,
@@ -16,12 +17,12 @@ const routes: RouteObject[] = [
       {
         path: RoutePath.SearchFullPath,
         action: searchAction,
-        loader: searchLoader,
+        loader: searchLoader(dispatch, getState),
         element: <Results />,
         children: [
           {
             path: RoutePath.Detatil,
-            loader: detailLoader,
+            loader: detailLoader(dispatch),
             element: <Detail />,
           },
         ],
@@ -34,4 +35,4 @@ const routes: RouteObject[] = [
   },
 ];
 
-export default routes;
+export default createRoutes;

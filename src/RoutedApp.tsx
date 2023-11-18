@@ -1,10 +1,15 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
-import routes from './router';
+import createRoutes from './createRoutes';
+import { AppDispatch, AppGetState } from './store/store';
 
-const router = createBrowserRouter(routes);
+interface PropType {
+  dispatch: AppDispatch;
+  getState: AppGetState;
+}
 
-function RoutedApp() {
+function RoutedApp({ dispatch, getState }: PropType) {
+  const router = createBrowserRouter(createRoutes(dispatch, getState));
   return <RouterProvider router={router} />;
 }
 
