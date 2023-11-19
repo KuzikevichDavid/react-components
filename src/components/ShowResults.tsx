@@ -9,6 +9,8 @@ import ShowItem from './ShowItem';
 
 const showedCount = 4;
 
+export const openDatailTestId = 'openDatail';
+
 const resultSectionClass = 'apiCallResults';
 
 function ShowResults() {
@@ -39,6 +41,7 @@ function ShowResults() {
                 key={`${Math.random()}`}
                 action={`/${serachPath}/${page}/${val.name ?? val.title}`}
                 onSubmit={() => handleOpenDetail()}
+                data-testid={openDatailTestId}
               >
                 <button type="submit">
                   <ShowItem item={val} showedCount={showedCount} />

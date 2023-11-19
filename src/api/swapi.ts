@@ -1,7 +1,7 @@
 import { json } from 'react-router-dom';
 import { Items, PagedResponseType, ResponceType } from './apiResponseType';
 
-const baseUrl = 'https://swapi.dev/api/';
+export const baseUrl = 'https://swapi.dev/api/';
 
 export enum ApiEndpoints {
   people = 'people',

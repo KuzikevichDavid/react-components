@@ -22,7 +22,7 @@ const createRoutes = (dispatch: AppDispatch, getState: AppGetState): RouteObject
         children: [
           {
             path: RoutePath.Detatil,
-            loader: detailLoader(dispatch),
+            loader: detailLoader(dispatch, getState),
             element: <Detail />,
           },
         ],

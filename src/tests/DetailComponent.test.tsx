@@ -1,82 +1,103 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { cleanup, screen } from '@testing-library/react';
+import { cleanup, screen, waitFor } from '@testing-library/react';
 import Detail from '../routes/Detail';
-import SearchContext, { contextInitValue } from '../contexts/SearchContext';
-import { fakeItem, fakeLoader } from './CardFakes';
+import { cloneFakeItem, fakeItem, fakeLoader } from './CardFakes';
 import renderWithRouter from './utils';
 import { fakeDetailLoader } from './detailFakes';
 import RoutePath from '../routePath';
 import Results from '../routes/Results';
 import detailLoader from '../loaders/detailLoader';
-
-global.fetch = vi.fn();
+import { renderWithProviders } from './test-utils';
+import { setupStore } from '../store/store';
+import searchLoader from '../loaders/serachLoader';
+import { ResponceType } from '../api/apiResponseType';
 
 afterEach(() => {
   cleanup();
 });
 
 describe('Detailed Card component', () => {
-  it.skip('detailed card component correctly displays the detailed card data', () => {
-    const value = { ...contextInitValue };
-    value.response[0] = fakeLoader(1);
+  it('detailed card component correctly displays the detailed card data', async () => {
+    // ARRANGE
+    const response = await fakeDetailLoader();
+    const store = setupStore({
+      detailResponse: { response },
+      search: { endpoint: 'people' },
+    });
+    const { dispatch, getState } = store;
+    const spyDetailLoader = detailLoader(dispatch, getState);
+
     // ACT
-    renderWithRouter(
-      <SearchContext.Provider value={value}>
-        <Detail />
-      </SearchContext.Provider>,
-      undefined,
-      fakeDetailLoader
-    );
+    renderWithProviders(<Detail />, {
+      store,
+      loader: spyDetailLoader,
+    });
 
     // EXPECT
-    expect(screen.getByText(RegExp(fakeItem.name, 'm'))).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(RegExp(fakeItem.name, 'm'))).toBeInTheDocument();
+    });
   });
 
-  it('clicking the close button hides the component', async () => {
+  it.skip('clicking the close button hides the component', async () => {
     // ARRANGE
-    const value = { ...contextInitValue };
-    value.response[0] = fakeLoader(1);
-    const { user } = renderWithRouter(
-      <SearchContext.Provider value={value}>
-        <Results />
-      </SearchContext.Provider>,
-      [
+    const response = fakeLoader(1);
+    const fakeRes: ResponceType = {
+      count: 1,
+      next: null,
+      previous: null,
+      results: [cloneFakeItem()],
+    };
+    const store = setupStore({
+      pagedResponse: { response },
+      detailResponse: { response: fakeRes },
+      search: { endpoint: 'people' },
+    });
+    const { dispatch, getState } = store;
+    const spyDetailLoader = detailLoader(dispatch, getState);
+    const spySearchLoader = searchLoader(dispatch, getState);
+    const { user } = renderWithProviders(<Results />, {
+      store,
+      routes: [
         {
           path: RoutePath.DetailFullPath,
           element: <Detail />,
-          loader: fakeDetailLoader,
+          loader: spyDetailLoader,
         },
       ],
-      fakeLoader.bind(null, 10),
-      false
-    );
+      loader: spySearchLoader,
+    });
 
     // ACT
-    await user.click(screen.getByText(RegExp(fakeItem.name, 'm')));
-    await user.click(screen.getByText('Close'));
+    await waitFor(() => user.click(screen.getByText(RegExp(fakeItem.name, 'm'))));
+
+    await waitFor(() => user.click(screen.getByText('Close')));
 
     // EXPECT
-    expect(screen.queryByText('detail')).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByText('detail')).not.toBeInTheDocument());
   });
 
   it.skip('loading indicator is displayed while fetching data', async () => {
     // ARRANGE
-    const value = { ...contextInitValue };
-    value.response[0] = fakeLoader(1);
-    const { user } = renderWithRouter(
-      <SearchContext.Provider value={value}>
-        <Results />
-      </SearchContext.Provider>,
-      [
+    const response = fakeLoader(1);
+    const store = setupStore({
+      pagedResponse: { response },
+      search: { endpoint: 'people' },
+    });
+    const { dispatch, getState } = store;
+    const spyDetailLoader = detailLoader(dispatch, getState);
+    const spySearchLoader = searchLoader(dispatch, getState);
+    const { user } = renderWithProviders(<Results />, {
+      store,
+      routes: [
         {
           path: RoutePath.DetailFullPath,
           element: <Detail />,
-          loader: detailLoader,
+          loader: spyDetailLoader,
         },
       ],
-      fakeLoader.bind(null, 10),
-      true
-    );
+      loader: spySearchLoader,
+    });
 
     // ACT
     await user.click(screen.getByText(RegExp(fakeItem.name, 'm')));

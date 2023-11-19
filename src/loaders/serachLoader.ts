@@ -11,8 +11,8 @@ const searchLoader =
 
     const data = dispatch(
       getPaged.initiate({
-        endpoint: params.endpoint,
-        page: +params.page,
+        endpoint: params.endpoint ?? state.search.endpoint,
+        page: +(params.page ?? 1),
         itemsPerPage: state.search.perPage,
         search: state.search.searchText,
       })

@@ -1,31 +1,30 @@
 import { describe, it, expect } from 'vitest';
 import { screen } from '@testing-library/react';
 import Pagination from '../components/pagination/Pagination';
-import SearchContext, { contextInitValue } from '../contexts/SearchContext';
 import RoutePath from '../routePath';
 import { fakeLoader } from './CardFakes';
-import renderWithRouter, { fakeAction } from './utils';
+import { fakeAction } from './utils';
+import { renderWithProviders } from './test-utils';
 
 describe('pagination component tests', () => {
   it('updates URL query parameter when page changes', async () => {
     // ARRANGE
     const fakeElementData = 'fake element data';
-    const value = { ...contextInitValue };
-    value.response[0] = fakeLoader(10);
-    const { user } = renderWithRouter(
-      <SearchContext.Provider value={value}>
-        <Pagination />
-      </SearchContext.Provider>,
-      [
+    const count = 10;
+    const response = fakeLoader(count);
+
+    // ACT
+    const { user } = renderWithProviders(<Pagination />, {
+      preloadedState: { pagedResponse: { response } },
+      routes: [
         {
           path: RoutePath.SearchFullPath,
           element: <>{fakeElementData}</>,
           action: fakeAction,
         },
       ],
-      undefined,
-      false
-    );
+      isChildRoutes: false,
+    });
 
     // ACT
     await user.click(screen.getByText('>'));

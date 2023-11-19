@@ -11,7 +11,7 @@ export const fakeItem: Required<Item> = {
 
 export const cloneFakeItem = (): Item => ({ ...fakeItem });
 
-export const fakeLoader = (itemsCount: number, pageCount = 10): PagedResponseType => {
+export const fakeLoader = (itemsCount = 10, pageCount = 10): PagedResponseType => {
   const res = Array<Item>(itemsCount);
   for (let index = 0; index < res.length; index++) {
     res[index] = cloneFakeItem();
