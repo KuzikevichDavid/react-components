@@ -1,0 +1,31 @@
+.loader-wrapper {
+  position: relative;
+}
+
+.loader-title {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+}
+
+.loader {
+  display: block;
+  position: relative;
+  margin: auto;
+  border: 20px solid #b7babd;
+  border-radius: 50%;
+  border-top: 20px solid #dd816a;
+  width: 100px;
+  height: 100px;
+  animation: animate 4s linear infinite;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(45deg);
+  }
+
+  100% {
+    transform: rotate(405deg);
+  }
+}
