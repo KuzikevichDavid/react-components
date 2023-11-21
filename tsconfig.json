@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "module": "ESNext",
     "moduleResolution": "Node",
     
@@ -18,10 +18,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": [
-      "vitest/globals"
-    ]
+    "types": [],
+
+    "incremental": true,
+    "forceConsistentCasingInFileNames": true,
+    "plugins": [{ "name": "next" }]
   },
-  "include": ["vite.config.ts", ".eslintrc.cjs", "src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["./dist/types/**/*.ts", "./next-env.d.ts" , ".eslintrc.cjs", "src"],
+  "exclude": ["./node_modules"]
 }
