@@ -17,6 +17,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:prettier/recommended',
+    "next/core-web-vitals",
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs', 'src/tests'],
   parser: '@typescript-eslint/parser',
