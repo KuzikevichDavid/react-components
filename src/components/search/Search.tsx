@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Form } from 'react-router-dom';
 import { setEndpoint, setSearch } from '../../store/reducers/search/searchSlice';
 import { RootState } from '../../store/RootState';
 
@@ -26,7 +25,7 @@ function Search() {
   };
 
   return (
-    <Form method="post" action={`${endpoint}/search/${startPage}`}>
+    <form method="post" action={`${endpoint}/search/${startPage}`}>
       <select
         className={searchOptionClass}
         name="apiEnpoint"
@@ -52,7 +51,7 @@ function Search() {
       <button type="submit" className={searchBtnClass}>
         <span>Search</span>
       </button>
-    </Form>
+    </form>
   );
 }
 

@@ -10,10 +10,11 @@ export interface Search {
 }
 
 const initState = (): Search => {
+  const isDefined = typeof window !== "undefined";
   return {
-    searchText: localStorage.getItem(storageKey) ?? '',
-    endpoint: localStorage.getItem(storageAPIKey) ?? 'people',
-    perPage: +(localStorage.getItem(storageItemsPerPageKey) ?? defaultPerPage),
+    searchText: isDefined ? localStorage.getItem(storageKey) ?? '' : '',
+    endpoint: isDefined ? localStorage.getItem(storageAPIKey) ?? 'people' : 'people',
+    perPage: isDefined ? +(localStorage.getItem(storageItemsPerPageKey) ?? defaultPerPage) : defaultPerPage,
   };
 };
 

@@ -1,4 +1,3 @@
-import { json } from 'react-router-dom';
 import { Items, PagedResponseType, ResponceType } from './apiResponseType';
 
 export const baseUrl = 'https://swapi.dev/api/';
@@ -38,7 +37,7 @@ export const fetchApi = async (endpoint: string, search?: string, page = 1) => {
 };
 
 const throwNotFound = () => {
-  throw json({ status: 404, statusText: 'Not found' });
+  throw new Response(JSON.stringify({ status: 404, statusText: 'Not found' }));
 };
 
 const calcPageCount = (count: number, perPage: number) => Math.ceil(count / perPage);

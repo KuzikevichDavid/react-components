@@ -2,7 +2,6 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { cleanup, screen, waitFor } from '@testing-library/react';
 import Detail from '../routes/Detail';
 import { cloneFakeItem, fakeItem, fakeLoader } from './CardFakes';
-import renderWithRouter from './utils';
 import { fakeDetailLoader } from './detailFakes';
 import RoutePath from '../routePath';
 import Results from '../routes/Results';
