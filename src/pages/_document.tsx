@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Document() {
   return (
     <Html lang="en">
-      <Head title='gfuck' />
+      <Head />
       <body>
         <Main />
         <NextScript />
