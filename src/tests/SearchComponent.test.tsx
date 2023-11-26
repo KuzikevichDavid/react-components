@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { screen, cleanup } from '@testing-library/react';
 import RoutePath from '../routePath';
-import Home from '../routes/Home';
+import Home from '../layouts/HomeLayout';
 import { fakeAction } from './utils';
 import Search from '../components/search/Search';
 import { renderWithProviders } from './test-utils';

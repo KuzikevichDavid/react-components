@@ -1,4 +1,5 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
+import { createWrapper } from 'next-redux-wrapper';
 import { swApi } from './api/swapi';
 import detailIsShowedSlice from './reducers/detailIsShowed/detailIsShowedSlice';
 import loadingFlagSlice from './reducers/loadingFlag/loadingFlagSlice';
@@ -27,3 +28,7 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
 export type AppGetState = AppStore['getState'];
+
+const setupCarry = () => setupStore();
+export const makeWrapper = (debug = true) => createWrapper<AppStore>(setupCarry, { debug });
+export const wrapper = createWrapper<AppStore>(setupCarry, { debug: false });

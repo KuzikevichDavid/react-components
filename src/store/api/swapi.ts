@@ -1,4 +1,5 @@
 import { BaseQueryApi, BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
+import { HYDRATE } from 'next-redux-wrapper';
 import { PagedResponseType, ResponceType } from '../../api/apiResponseType';
 import { RootState } from '../RootState';
 import { fetchPaged, fetchApi } from '../../api/swapi';
@@ -55,9 +56,17 @@ const customBaseQuery: BaseQueryFn = async (args: QueryArgs, api: BaseQueryApi) 
   }
 };
 
+const apiReducerName = 'swapi';
+
 export const swApi = createApi({
   baseQuery: customBaseQuery,
-  reducerPath: 'swapi',
+  reducerPath: apiReducerName,
+  extractRehydrationInfo: (action) => {
+    if (action.type === HYDRATE) {
+      return action.payload[apiReducerName];
+    }
+    return;
+  },
   tagTypes: [],
   endpoints: (builder) => ({
     [QueryEndpoints.FetchPaged]: builder.query<PagedResponseType, QueryArgs>({
@@ -72,3 +81,8 @@ export const swApi = createApi({
 });
 
 export const { getByName, getPaged } = swApi.endpoints;
+export const {
+  useGetPagedQuery,
+  useGetByNameQuery,
+  util: { getRunningQueriesThunk },
+} = swApi;

@@ -9,12 +9,15 @@ export interface Search {
   perPage: number;
 }
 
+const isDefined = typeof window !== 'undefined';
+
 const initState = (): Search => {
-  const isDefined = typeof window !== "undefined";
   return {
     searchText: isDefined ? localStorage.getItem(storageKey) ?? '' : '',
     endpoint: isDefined ? localStorage.getItem(storageAPIKey) ?? 'people' : 'people',
-    perPage: isDefined ? +(localStorage.getItem(storageItemsPerPageKey) ?? defaultPerPage) : defaultPerPage,
+    perPage: isDefined
+      ? +(localStorage.getItem(storageItemsPerPageKey) ?? defaultPerPage)
+      : defaultPerPage,
   };
 };
 
@@ -24,21 +27,21 @@ const searchSlice = createSlice({
   reducers: {
     setSearch: {
       reducer: (state, action: PayloadAction<string>) => {
-        localStorage.setItem(storageKey, action.payload);
+        if (isDefined) localStorage.setItem(storageKey, action.payload);
         state.searchText = action.payload;
       },
       prepare: (searchText: string) => ({ payload: searchText }),
     },
     setEndpoint: {
       reducer: (state, action: PayloadAction<string>) => {
-        localStorage.setItem(storageAPIKey, action.payload);
+        if (isDefined) localStorage.setItem(storageAPIKey, action.payload);
         state.endpoint = action.payload;
       },
       prepare: (endpoint: string) => ({ payload: endpoint }),
     },
     setItemsPerPage: {
       reducer: (state, action: PayloadAction<number>) => {
-        localStorage.setItem(storageItemsPerPageKey, action.payload.toString());
+        if (isDefined) localStorage.setItem(storageItemsPerPageKey, action.payload.toString());
         state.perPage = action.payload;
       },
       prepare: (perPage: number) => ({ payload: perPage }),

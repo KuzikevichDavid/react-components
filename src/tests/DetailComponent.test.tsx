@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { cleanup, screen, waitFor } from '@testing-library/react';
-import Detail from '../routes/Detail';
+import Detail from '../layouts/Detail';
 import { cloneFakeItem, fakeItem, fakeLoader } from './CardFakes';
 import { fakeDetailLoader } from './detailFakes';
 import RoutePath from '../routePath';
-import Results from '../routes/Results';
+import Results from '../layouts/Results';
 import detailLoader from '../loaders/detailLoader';
 import { renderWithProviders } from './test-utils';
 import { setupStore } from '../store/store';

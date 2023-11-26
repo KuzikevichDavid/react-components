@@ -1,39 +1,44 @@
-import { Form, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import RoutePath from '../../routePath';
+import { useRouter } from 'next/router';
 import styles from './Pagination.module.css';
 import { RootState } from '../../store/RootState';
 import { setItemsPerPage } from '../../store/reducers/search/searchSlice';
 
-export const paginationFormName = 'paginationForm';
+export const paginationformName = 'paginationform';
 
 const selectClassName = 'itemsPerPage';
 
 const method = 'post';
 
-function Pagination() {
-  const navigate = useNavigate();
+const startPage = 1;
 
+function Pagination() {
+  const router = useRouter();
   const dispatch = useDispatch();
 
-  const endpoint = useSelector((state: RootState) => state.search.endpoint);
+  const search = useSelector((state: RootState) => state.search);
+  const { endpoint, perPage, searchText } = search;
   const itemsPerPage = useSelector((state: RootState) => state.search.perPage);
   const pagedResponse = useSelector((state: RootState) => state.pagedResponse.response);
   const { page, pageCount } = pagedResponse;
 
-  const serachPath = `${endpoint}/${RoutePath.Search}`;
+  const getActionPath = (actionPage: number = startPage, actionPerPage: number = perPage) =>
+    `/${endpoint}?page=${actionPage}${actionPerPage ? `&perPage=${actionPerPage}` : ''}${
+      searchText ? `&search=${searchText}` : ''
+    }`;
+  const actionPath = getActionPath();
 
-  function handleChangeItemsPerPage(e: Event) {
-    const selectElement = e.target as HTMLSelectElement;
-    dispatch(setItemsPerPage(+selectElement.value));
-    navigate(`../${serachPath}/1`);
+  async function handleChangeItemsPerPage(e: Event): Promise<void> {
+    const selectedValue = +(e.target as HTMLSelectElement).value;
+    dispatch(setItemsPerPage(selectedValue));
+    await router.push(getActionPath(undefined, selectedValue));
   }
   const prevDisabled = page === 1;
   const nextDisabled = page === pageCount;
 
   return (
     <div className={styles['pagination-wrapper']}>
-      <Form method={method} action={`/${serachPath}/1`}>
+      <form method={method} action={actionPath}>
         <select
           className={selectClassName}
           defaultValue={itemsPerPage}
@@ -43,34 +48,34 @@ function Pagination() {
           <option value="10">10</option>
           <option value="15">15</option>
         </select>
-      </Form>
-      <Form method={method} action={`/${serachPath}/1`}>
-        <input type="hidden" name="formName" value={paginationFormName} />
+      </form>
+      <form method={method} action={getActionPath()}>
+        <input type="hidden" name="formName" value={paginationformName} />
         <button type="submit" disabled={prevDisabled}>
           {'<<'}
         </button>
-      </Form>
-      <Form method={method} action={`/${serachPath}/${page - 1}`}>
-        <input type="hidden" name="formName" value={paginationFormName} />
+      </form>
+      <form method={method} action={getActionPath(page - 1)}>
+        <input type="hidden" name="formName" value={paginationformName} />
         <button type="submit" disabled={prevDisabled}>
           {'<'}
         </button>
-      </Form>
+      </form>
       <button type="button" disabled>
         {page}
       </button>
-      <Form method={method} action={`/${serachPath}/${page + 1}`}>
-        <input type="hidden" name="formName" value={paginationFormName} />
+      <form method={method} action={getActionPath(page + 1)}>
+        <input type="hidden" name="formName" value={paginationformName} />
         <button type="submit" disabled={nextDisabled}>
           {'>'}
         </button>
-      </Form>
-      <Form method={method} action={`/${serachPath}/${pageCount}`}>
-        <input type="hidden" name="formName" value={paginationFormName} />
+      </form>
+      <form method={method} action={getActionPath(pageCount)}>
+        <input type="hidden" name="formName" value={paginationformName} />
         <button type="submit" disabled={nextDisabled}>
           {'>>'}
         </button>
-      </Form>
+      </form>
     </div>
   );
 }

@@ -1,6 +1,8 @@
+import { RootState } from '@/store/store';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEndpoint, setSearch } from '../../store/reducers/search/searchSlice';
-import { RootState } from '../../store/RootState';
+import { setEndpoint, setItemsPerPage, setSearch } from '../../store/reducers/search/searchSlice';
 
 const searchInputClass = 'section-search__input';
 const searchOptionClass = 'section-search__select';
@@ -8,11 +10,23 @@ const searchBtnClass = 'section-search__btn-search';
 
 const startPage = 1;
 
+const parseQuery = (query: NodeJS.Dict<string | string[]>) => {
+  const { prePage, search, page, endpoint } = query;
+  return {
+    perPage: +(prePage as string),
+    search: search as string,
+    page: +(page as string),
+    endpoint: endpoint as string,
+  };
+};
+
 function Search() {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const parsed = parseQuery(router.query);
 
   const search = useSelector((state: RootState) => state.search);
-  const { searchText, endpoint } = search;
+  const { searchText, endpoint, perPage } = search;
 
   const handleSelectApi = (e: Event) => {
     const select = e.target as HTMLSelectElement;
@@ -24,8 +38,29 @@ function Search() {
     dispatch(setSearch(input.value));
   };
 
+  const actionPath = `/${endpoint}?page=${startPage}${perPage ? `&perPage=${perPage}` : ''}${
+    searchText ? `&search=${searchText}` : ''
+  }`;
+
+  const handleSearchClick = async (): Promise<void> => {
+    await router.push(actionPath);
+  };
+
+  useEffect(() => {
+    if (parsed.endpoint) dispatch(setEndpoint(parsed.endpoint));
+  }, [parsed.endpoint]);
+
+  useEffect(() => {
+    if (parsed.search) dispatch(setSearch(parsed.search));
+    else dispatch(setSearch(''));
+  }, [parsed.search]);
+
+  useEffect(() => {
+    if (parsed.perPage) dispatch(setItemsPerPage(parsed.perPage));
+  }, [parsed.perPage]);
+
   return (
-    <form method="post" action={`${endpoint}/search/${startPage}`}>
+    <form method="post" action={actionPath}>
       <select
         className={searchOptionClass}
         name="apiEnpoint"
@@ -48,7 +83,7 @@ function Search() {
         onChange={(e: Event) => handleSeachText(e)}
       />
       <input type="hidden" name="formName" value="search" />
-      <button type="submit" className={searchBtnClass}>
+      <button className={searchBtnClass} type="button" onClick={() => handleSearchClick()}>
         <span>Search</span>
       </button>
     </form>
