@@ -18,19 +18,18 @@ export function App({ Component, pageProps }: AppPropsWithLayout) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    Router.events.on("routeChangeStart", (url) => {
-      setIsLoading(true)
+    Router.events.on('routeChangeStart', () => {
+      setIsLoading(true);
     });
 
-    Router.events.on("routeChangeComplete", (url) => {
-      setIsLoading(false)
+    Router.events.on('routeChangeComplete', () => {
+      setIsLoading(false);
     });
 
-    Router.events.on("routeChangeError", (url) => {
-      setIsLoading(false)
+    Router.events.on('routeChangeError', () => {
+      setIsLoading(false);
     });
-
-  }, [Router])
+  }, [Router]);
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
 

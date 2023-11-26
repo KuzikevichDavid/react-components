@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import ShowItem from './ShowItem';
 import { closeDetail } from '../store/reducers/detailIsShowed/detailIsShowedSlice';
 import styles from './Detail.module.css';
-import { RootState } from '@/store/store';
 
 function Detail() {
-
   const dispatch = useDispatch();
 
   const detailIsShowed = useSelector((state: RootState) => state.detailIsShowed.isShowed);

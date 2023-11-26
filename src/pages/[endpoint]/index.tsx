@@ -38,7 +38,7 @@ function Results({ data, detail }) {
       dispatch(openDetail());
       dispatch(setResponse(detail));
     } else {
-      dispatch(closeDetail())
+      dispatch(closeDetail());
     }
   }, [detail]);
 
@@ -90,7 +90,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     itemsPerPage: +(perPage as string) ?? null,
   };
 
-  const detailName = detail as string
+  const detailName = detail as string;
 
   if (args.endpoint) store.dispatch(setEndpoint(args.endpoint));
   if (args.itemsPerPage) store.dispatch(setItemsPerPage(args.itemsPerPage));
@@ -103,7 +103,15 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   return {
     props: {
       data: data[0].data,
-      detail: detailName ? { results: [(data[0].data as PagedResponseType).results.find((x) => x.name ?? x.title === detailName)] } : null
+      detail: detailName
+        ? {
+            results: [
+              (data[0].data as PagedResponseType).results.find(
+                (x) => x.name ?? x.title === detailName
+              ),
+            ],
+          }
+        : null,
     },
   };
 });

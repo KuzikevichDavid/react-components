@@ -1,7 +1,6 @@
 import { BaseQueryApi, BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 import { PagedResponseType, ResponceType } from '../../api/apiResponseType';
-import { RootState } from '../RootState';
 import { fetchPaged, fetchApi } from '../../api/swapi';
 import {
   detailSectionEndLoading,
@@ -9,6 +8,7 @@ import {
   mainSectionEndLoading,
   mainSectionStartLoading,
 } from '../reducers/loadingFlag/loadingFlagSlice';
+import { RootState } from '../store';
 
 interface QueryArgs {
   page?: number;
@@ -65,7 +65,6 @@ export const swApi = createApi({
     if (action.type === HYDRATE) {
       return action.payload[apiReducerName];
     }
-    return;
   },
   tagTypes: [],
   endpoints: (builder) => ({

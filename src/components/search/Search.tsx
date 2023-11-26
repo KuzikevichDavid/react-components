@@ -38,8 +38,9 @@ function Search() {
     dispatch(setSearch(input.value));
   };
 
-  const actionPath = `/${endpoint}?page=${startPage}${perPage ? `&perPage=${perPage}` : ''}${searchText ? `&search=${searchText}` : ''
-    }`;
+  const actionPath = `/${endpoint}?page=${startPage}${perPage ? `&perPage=${perPage}` : ''}${
+    searchText ? `&search=${searchText}` : ''
+  }`;
 
   const handleSearchClick = async (): Promise<void> => {
     await router.push(actionPath);

@@ -1,9 +1,9 @@
+import { RootState } from '@/store/store';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Item } from '../api/apiResponseType';
 import { openDetail } from '../store/reducers/detailIsShowed/detailIsShowedSlice';
 import { detailSectionStartLoading } from '../store/reducers/loadingFlag/loadingFlagSlice';
-import { RootState } from '../store/RootState';
 import ShowItem from './ShowItem';
 
 const showedCount = 4;
@@ -16,19 +16,15 @@ function ShowResults() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  // const search = useSelector((state: RootState) => state.search);
   const pagedResponse = useSelector((state: RootState) => state.pagedResponse.response);
-  const { /* page, */ results: resultItems } = pagedResponse;
+  const { results: resultItems } = pagedResponse;
 
-  // const serachPath = `${endpoint}/${RoutePath.Search}`;
-
-  const { asPath } = router
+  const { asPath } = router;
   console.log(asPath);
-
 
   async function handleOpenDetail(e: Event): Promise<void> {
     e.preventDefault();
-    const form = e.target as HTMLFormElement
+    const form = e.target as HTMLFormElement;
 
     dispatch(openDetail());
     dispatch(detailSectionStartLoading());
