@@ -18,27 +18,31 @@ function Pagination() {
 
   const search = useSelector((state: RootState) => state.search);
   const { endpoint, perPage, searchText } = search;
-  const itemsPerPage = useSelector((state: RootState) => state.search.perPage);
   const pagedResponse = useSelector((state: RootState) => state.pagedResponse.response);
-  const { page, pageCount } = pagedResponse;
+  const { page, pageCount, itemsPerPage } = pagedResponse;
 
   const getActionPath = (actionPage: number = startPage, actionPerPage: number = perPage) =>
-    `/${endpoint}?page=${actionPage}${actionPerPage ? `&perPage=${actionPerPage}` : ''}${
-      searchText ? `&search=${searchText}` : ''
+    `/${endpoint}?page=${actionPage}${actionPerPage ? `&perPage=${actionPerPage}` : ''}${searchText ? `&search=${searchText}` : ''
     }`;
-  const actionPath = getActionPath();
 
   async function handleChangeItemsPerPage(e: Event): Promise<void> {
     const selectedValue = +(e.target as HTMLSelectElement).value;
     dispatch(setItemsPerPage(selectedValue));
     await router.push(getActionPath(undefined, selectedValue));
   }
+
+  async function handleChangePage(e: Event): Promise<void> {
+    e.preventDefault()
+    const form = e.target as HTMLFormElement
+    await router.push(form.action)
+  }
+
   const prevDisabled = page === 1;
   const nextDisabled = page === pageCount;
 
   return (
     <div className={styles['pagination-wrapper']}>
-      <form method={method} action={actionPath}>
+      <form method={method} action={getActionPath()}>
         <select
           className={selectClassName}
           defaultValue={itemsPerPage}
@@ -49,13 +53,13 @@ function Pagination() {
           <option value="15">15</option>
         </select>
       </form>
-      <form method={method} action={getActionPath()}>
+      <form method={method} action={getActionPath()} onSubmit={(e: Event) => handleChangePage(e)}>
         <input type="hidden" name="formName" value={paginationformName} />
         <button type="submit" disabled={prevDisabled}>
           {'<<'}
         </button>
       </form>
-      <form method={method} action={getActionPath(page - 1)}>
+      <form method={method} action={getActionPath(page - 1)} onSubmit={(e: Event) => handleChangePage(e)}>
         <input type="hidden" name="formName" value={paginationformName} />
         <button type="submit" disabled={prevDisabled}>
           {'<'}
@@ -64,13 +68,13 @@ function Pagination() {
       <button type="button" disabled>
         {page}
       </button>
-      <form method={method} action={getActionPath(page + 1)}>
+      <form method={method} action={getActionPath(page + 1)} onSubmit={(e: Event) => handleChangePage(e)}>
         <input type="hidden" name="formName" value={paginationformName} />
         <button type="submit" disabled={nextDisabled}>
           {'>'}
         </button>
       </form>
-      <form method={method} action={getActionPath(pageCount)}>
+      <form method={method} action={getActionPath(pageCount)} onSubmit={(e: Event) => handleChangePage(e)}>
         <input type="hidden" name="formName" value={paginationformName} />
         <button type="submit" disabled={nextDisabled}>
           {'>>'}

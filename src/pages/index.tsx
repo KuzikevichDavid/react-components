@@ -17,8 +17,7 @@ Home.getLayout = (page: ReactElement, isLoading = false) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  console.log('index');
+export const getServerSideProps = wrapper.getServerSideProps(() => async () => {
   return {
     props: {},
   };

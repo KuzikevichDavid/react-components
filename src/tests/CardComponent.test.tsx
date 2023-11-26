@@ -5,7 +5,7 @@ import ShowItem from '../components/ShowItem';
 import { cloneFakeItem, fakeItem, fakeItemFieldsCount, fakeLoader } from './CardFakes';
 import Results from '../layouts/Results';
 import RoutePath from '../routePath';
-import Detail from '../layouts/Detail';
+import Detail from '../components/Detail';
 import { renderWithProviders } from './test-utils';
 import { setupStore } from '../store/store';
 import searchLoader from '../loaders/serachLoader';

@@ -38,9 +38,8 @@ function Search() {
     dispatch(setSearch(input.value));
   };
 
-  const actionPath = `/${endpoint}?page=${startPage}${perPage ? `&perPage=${perPage}` : ''}${
-    searchText ? `&search=${searchText}` : ''
-  }`;
+  const actionPath = `/${endpoint}?page=${startPage}${perPage ? `&perPage=${perPage}` : ''}${searchText ? `&search=${searchText}` : ''
+    }`;
 
   const handleSearchClick = async (): Promise<void> => {
     await router.push(actionPath);
@@ -64,7 +63,7 @@ function Search() {
       <select
         className={searchOptionClass}
         name="apiEnpoint"
-        defaultValue={endpoint}
+        defaultValue={parsed.endpoint}
         onChange={(e: Event) => handleSelectApi(e)}
       >
         <option value="people">people</option>
@@ -78,7 +77,7 @@ function Search() {
         className={searchInputClass}
         name="searchArg"
         type="search"
-        defaultValue={searchText}
+        defaultValue={parsed.search}
         placeholder="Type seach query to API"
         onChange={(e: Event) => handleSeachText(e)}
       />

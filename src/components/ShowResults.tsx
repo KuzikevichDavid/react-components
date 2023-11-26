@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Item } from '../api/apiResponseType';
 import { openDetail } from '../store/reducers/detailIsShowed/detailIsShowedSlice';
@@ -12,19 +13,26 @@ export const openDatailTestId = 'openDatail';
 const resultSectionClass = 'apiCallResults';
 
 function ShowResults() {
+  const router = useRouter();
   const dispatch = useDispatch();
 
-  // const endpoint = useSelector((state: RootState) => state.search.endpoint);
+  // const search = useSelector((state: RootState) => state.search);
   const pagedResponse = useSelector((state: RootState) => state.pagedResponse.response);
   const { /* page, */ results: resultItems } = pagedResponse;
 
   // const serachPath = `${endpoint}/${RoutePath.Search}`;
 
-  function handleOpenDetail(e: Event): void {
+  const { asPath } = router
+  console.log(asPath);
+
+
+  async function handleOpenDetail(e: Event): Promise<void> {
     e.preventDefault();
+    const form = e.target as HTMLFormElement
 
     dispatch(openDetail());
     dispatch(detailSectionStartLoading());
+    await router.push(form.action);
   }
 
   if (resultItems) {
@@ -39,7 +47,7 @@ function ShowResults() {
                 method="get"
                 className="card"
                 key={`${Math.random()}`}
-                // action={`/${serachPath}/${page}/${val.name ?? val.title}`}
+                action={`${asPath}&detail=${encodeURIComponent(val.name ?? val.title ?? '')}`}
                 onSubmit={(e: Event) => handleOpenDetail(e)}
                 data-testid={openDatailTestId}
               >

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { cleanup, screen, waitFor } from '@testing-library/react';
-import Detail from '../layouts/Detail';
+import Detail from '../components/Detail';
 import { cloneFakeItem, fakeItem, fakeLoader } from './CardFakes';
 import { fakeDetailLoader } from './detailFakes';
 import RoutePath from '../routePath';

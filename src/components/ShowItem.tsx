@@ -8,7 +8,7 @@ interface PropType {
 function ShowItem({ item, showedCount }: PropType) {
   return (
     <>
-      {Object.entries(item).map(function b(entry: [string, string], index: number) {
+      {item && Object.entries(item).map(function b(entry: [string, string], index: number) {
         const [entryKey, value] = entry;
         if (index <= showedCount && entryKey !== 'url') {
           return (

@@ -1,21 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoaderData, useNavigate } from 'react-router-dom';
-import { ResponceType } from '../api/apiResponseType';
-import ShowItem from '../components/ShowItem';
+import ShowItem from './ShowItem';
 import { closeDetail } from '../store/reducers/detailIsShowed/detailIsShowedSlice';
-import { setResponse } from '../store/reducers/response/responceSlice';
-import { RootState } from '../store/RootState';
 import styles from './Detail.module.css';
-
-export interface ContextType {
-  isClose: boolean;
-  setIsClose: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { RootState } from '@/store/store';
 
 function Detail() {
-  const navigate = useNavigate();
-  const loaderData = useLoaderData() as ResponceType;
 
   const dispatch = useDispatch();
 
@@ -26,7 +16,7 @@ function Detail() {
   const { results } = response;
 
   function handleClose() {
-    navigate('..');
+    dispatch(closeDetail());
   }
 
   useEffect(() => {
@@ -35,16 +25,9 @@ function Detail() {
 
       handleClose();
     }
-    return () => {
-      dispatch(closeDetail());
-    };
   }, [detailIsShowed]);
 
-  useEffect(() => {
-    dispatch(setResponse(loaderData));
-  }, [loaderData]);
-
-  return results.length ? (
+  return results?.length ? (
     <div className={styles['datail-wrapper']} title='"Detail" section'>
       <h2>detail</h2>
       <button type="button" onClick={() => handleClose()}>

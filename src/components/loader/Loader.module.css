@@ -1,17 +1,21 @@
 .loader-wrapper {
-  position: relative;
+  position: fixed;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
 }
 
 .loader-title {
   position: absolute;
-  top: 40%;
-  left: 40%;
+  top: 50px;
+  right: 35px;
+  font-weight: 700;
 }
 
 .loader {
   display: block;
   position: relative;
   margin: auto;
+  opacity: 0.5;
   border: 20px solid #b7babd;
   border-radius: 50%;
   border-top: 20px solid #dd816a;
