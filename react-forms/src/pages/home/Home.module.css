@@ -1,0 +1,14 @@
+.nav-element__wrapper {
+    border-bottom: 1px solid black;
+}
+
+.nav-element__list {
+    display: flex;
+    gap: 2em;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.nav-element__list-item {
+    display: inline-block;
+}
