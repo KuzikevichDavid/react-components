@@ -22,4 +22,6 @@ const userSlice = createSlice({
   },
 });
 
-export default userSlice;
+export const { setResponse } = userSlice.actions;
+
+export default userSlice.reducer;
