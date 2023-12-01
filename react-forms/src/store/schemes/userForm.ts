@@ -10,7 +10,7 @@ import { object, string, number, boolean, InferType, TestContext } from "yup";
 // autocomplete control to select country(all countries shoudl be stored in the Redux store) Form should contain labels, which should be connected with inouts(look at htmlFor)
 
 const defaultGender = "other";
-const genderList = ["male", "female", defaultGender];
+export const genderList = ["male", "female", defaultGender];
 
 const password = string()
   .matches(/([A-Z]+)/)

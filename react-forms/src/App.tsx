@@ -7,7 +7,7 @@ import {
 import Routes from "./routes";
 import Home from "./pages/home/Home";
 import Uncontrolled from "./pages/Uncontrolled";
-import ReactHookForm from "./pages/ReactHookForm";
+import ReactHookForm from "./pages/ReactHookForm/ReactHookForm";
 
 const routes: RouteObject[] = [
   {
