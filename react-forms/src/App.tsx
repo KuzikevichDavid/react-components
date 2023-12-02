@@ -5,19 +5,21 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Routes from "./routes";
-import FormData from './components/FormData'
+import FormData from "./components/FormData";
 import Home from "./pages/home/Home";
 import Uncontrolled from "./pages/Uncontrolled";
-import ReactHookForm from "./pages/ReactHookForm/ReactHookForm";
+import ReactHookForm from "./pages/ReactHookForm/ReactHookFormComponent";
 
 const routes: RouteObject[] = [
   {
     path: Routes.Home,
     element: <Home />,
-    children: [{
-      index: true,
-      element: <FormData />
-    }]
+    children: [
+      {
+        index: true,
+        element: <FormData />,
+      },
+    ],
   },
   {
     path: Routes.UncontrolledComponents,
@@ -26,7 +28,7 @@ const routes: RouteObject[] = [
   {
     path: Routes.ReactHookForm,
     element: <ReactHookForm />,
-  }
+  },
 ];
 
 const router = createBrowserRouter(routes);

@@ -1,4 +1,4 @@
-import { object, string, number, boolean, InferType, TestContext, array } from "yup";
+import { object, string, number, boolean, InferType, TestContext } from "yup";
 
 // name(validate for first uppercased letter)
 // age(should be number, no negative values)
@@ -12,31 +12,32 @@ import { object, string, number, boolean, InferType, TestContext, array } from "
 const defaultGender = "other";
 export const genderList = ["male", "female", defaultGender];
 
-export type SelectItem = {
+export interface SelectItem {
   value: string;
   label: string;
 }
 const defaultCountry: SelectItem = {
-  label: 'Belarus',
-  value: 'BY',
+  label: "Belarus",
+  value: "BY",
 };
 
-export const countries: SelectItem[] = [{
-  label: 'Russuia',
-  value: 'RU',
-},
-{
-  label: 'Poland',
-  value: 'PL'
-},
-{
-  label: 'England',
-  value: 'EN'
-},
-  defaultCountry
+export const countries: SelectItem[] = [
+  {
+    label: "Russuia",
+    value: "RU",
+  },
+  {
+    label: "Poland",
+    value: "PL",
+  },
+  {
+    label: "England",
+    value: "EN",
+  },
+  defaultCountry,
 ];
 
-const countyCodes = countries.map((val) => val.value)
+const countyCodes = countries.map((val) => val.value);
 
 // const imageExt = ['png', 'jpeg']
 /* 
@@ -80,8 +81,8 @@ type PasswordObject = InferType<typeof passwordObject>;
 
 const passwordSchema = passwordObject.test({
   test: (value: PasswordObject, context: TestContext) => {
-    const isValid = value.first === value.second
-    return isValid ? isValid : context.createError({ message: "Passwords don't match", });
+    const isValid = value.first === value.second;
+    return isValid || context.createError({ message: "Passwords don't match" });
   },
 });
 

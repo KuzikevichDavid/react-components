@@ -1,59 +1,79 @@
 import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import userSchema, { countries, genderList, SelectItem, UserFormType } from "../../store/schemes/userForm";
-import { setUserFormData } from "../../store/reducers/formSlice";
-import { connect } from "react-redux";
-import { AppRootState } from "../../store/store";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import { setUserData } from "../../store/reducers/dataSlice";
+import userSchema, {
+  countries,
+  genderList,
+  SelectItem,
+  UserFormType,
+} from "../../store/schemes/userForm";
+import { setUserFormData as setUserFormDataAction } from "../../store/reducers/formSlice";
+import { setUserData as setUserDataAction } from "../../store/reducers/dataSlice";
 
 interface PropType {
-  setUserFormData: typeof setUserFormData;
-  setUserData: typeof setUserData;
+  setUserFormData: typeof setUserFormDataAction;
+  setUserData: typeof setUserDataAction;
   userFormData: Partial<UserFormType>;
   countries: SelectItem[];
 }
 
-function ReactHookFormComponent(props: PropType) {
-  const navigate = useNavigate()
+function ReactHookFormComponent({
+  countries: propsCountries,
+  setUserData,
+  setUserFormData,
+  userFormData,
+}: PropType) {
+  const navigate = useNavigate();
 
-  console.log(props);
+  // console.log(props);
 
   const userForm = useForm<UserFormType>({
     resolver: yupResolver<UserFormType>(userSchema),
     mode: "onChange",
-    defaultValues: props.userFormData,
+    defaultValues: userFormData,
   });
 
-  const { handleSubmit, formState: { errors, isValid }, control } = userForm
+  const {
+    handleSubmit,
+    formState: { errors, isValid },
+    control,
+  } = userForm;
 
   const onSubmit = (data: UserFormType) => {
     console.log(data);
 
-    props.setUserFormData(data);
+    setUserFormData(data);
 
-    const { accept, age, country, email, gender, name, password } = data
-    const selectedCountry: string = (countries.find(v => v.value === country)?.label)!
-    props.setUserData({ accept, age, email, name, gender, password: password.first, country: selectedCountry })
+    const { accept, age, country, email, gender, name, password } = data;
+    const selectedCountry = countries.find((v) => v.value === country);
+    const selectedCountryLabel = selectedCountry ? selectedCountry.label : "";
+    setUserData({
+      accept,
+      age,
+      email,
+      name,
+      gender,
+      password: password.first,
+      country: selectedCountryLabel,
+    });
 
-    navigate('..');
+    navigate("..");
   };
   return (
     <>
       <h1>React Hook Form</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} >
-
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           render={({ field }) => {
-            const id = 'email'
+            const id = "email";
             return (
               <>
-                <label htmlFor={id}>{'email'}</label>
+                <label htmlFor={id}>email</label>
                 <input {...field} id={id} />
                 <p>{errors.email?.message}</p>
               </>
-            )
+            );
           }}
           name="email"
           control={control}
@@ -61,15 +81,15 @@ function ReactHookFormComponent(props: PropType) {
         />
 
         <Controller
-          render={({ field, fieldState, }) => {
-            const id = 'name'
+          render={({ field, fieldState }) => {
+            const id = "name";
             return (
               <>
                 <label htmlFor={id}>{id}</label>
                 <input {...field} id={id} />
                 <p>{fieldState.error?.message}</p>
               </>
-            )
+            );
           }}
           name="name"
           control={control}
@@ -115,20 +135,20 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field: rootField, fieldState: rootFieldState }) => {
-            const rootId = 'password'
+            const rootId = "password";
             return (
               <>
                 <fieldset id={rootId} ref={rootField.ref}>
                   <Controller
                     render={({ field }) => {
-                      const id = 'password_first'
+                      const id = "password_first";
                       return (
                         <>
                           <label htmlFor={id}>{id}</label>
-                          <input type={"password"} {...field} id={id} />
+                          <input type="password" {...field} id={id} />
                           <p>{errors.password?.first?.message}</p>
                         </>
-                      )
+                      );
                     }}
                     name="password.first"
                     control={control}
@@ -137,14 +157,14 @@ function ReactHookFormComponent(props: PropType) {
 
                   <Controller
                     render={({ field }) => {
-                      const id = 'repeat_password'
+                      const id = "repeat_password";
                       return (
                         <>
-                          <label htmlFor={id}>{'repeat password'}</label>
-                          <input type={"password"} {...field} id={id} />
+                          <label htmlFor={id}>repeat password</label>
+                          <input type="password" {...field} id={id} />
                           <p>{errors.password?.second?.message}</p>
                         </>
-                      )
+                      );
                     }}
                     name="password.second"
                     control={control}
@@ -154,7 +174,7 @@ function ReactHookFormComponent(props: PropType) {
                 <p>{`${rootFieldState.invalid}`}</p>
                 <p>{rootFieldState.error?.message}</p>
               </>
-            )
+            );
           }}
           name="password"
           control={control}
@@ -162,14 +182,14 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field }) => {
-            const id = 'age'
+            const id = "age";
             return (
               <>
                 <label htmlFor={id}>{id}</label>
-                <input type={"number"} {...field} id={id} />
+                <input type="number" {...field} id={id} />
                 <p>{errors.age?.message}</p>
               </>
-            )
+            );
           }}
           name="age"
           control={control}
@@ -177,40 +197,48 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field }) => {
-            const id = 'country'
+            const id = "country";
             return (
               <>
                 <label htmlFor={id}>{id}</label>
-                <select {...field} id={id} >
-                  {props.countries.map((val) => (<option value={val.value} key={val.value}>{val.label}</option>))}
-                  <option value=''></option>
+                <select {...field} id={id}>
+                  {propsCountries.map((val) => (
+                    <option value={val.value} key={val.value}>
+                      {val.label}
+                    </option>
+                  ))}
+                  <option value="" />
                 </select>
                 <p>{errors.country?.message}</p>
               </>
-            )
+            );
           }}
           name="country"
           control={control}
-          defaultValue=''
+          defaultValue=""
         />
 
         <Controller
           render={({ field }) => {
-            const id = 'gender'
+            const id = "gender";
             return (
               <>
                 <label htmlFor={id}>{id}</label>
-                <select {...field} id={id} >
-                  {genderList.map((val) => (<option value={val} key={val}>{val}</option>))}
-                  <option value=''></option>
+                <select {...field} id={id}>
+                  {genderList.map((val) => (
+                    <option value={val} key={val}>
+                      {val}
+                    </option>
+                  ))}
+                  <option value="" />
                 </select>
                 <p>{errors.gender?.message}</p>
               </>
-            )
+            );
           }}
           name="gender"
           control={control}
-          defaultValue=''
+          defaultValue=""
         />
 
         {/* <Controller
@@ -236,14 +264,14 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field }) => {
-            const id = 'accept'
+            const id = "accept";
             return (
               <>
-                <label htmlFor={id}>{'accept T&C'}</label>
-                <input type={"checkbox"} {...field} id={id} />
+                <label htmlFor={id}>accept T&C</label>
+                <input type="checkbox" {...field} id={id} />
                 <p>{errors.accept?.message}</p>
               </>
-            )
+            );
           }}
           name="accept"
           control={control}
@@ -255,8 +283,5 @@ function ReactHookFormComponent(props: PropType) {
     </>
   );
 }
-const mapState = (state: AppRootState) => ({ userFormData: state.userFormData.data, countries: state.countries.data });
 
-const ReactHookForm = connect(mapState, { setUserFormData, setUserData })(ReactHookFormComponent);
-
-export default ReactHookForm;
+export default ReactHookFormComponent;

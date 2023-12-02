@@ -5,7 +5,7 @@ import App from "./App";
 import "./styles/index.css";
 import { setupStore } from "./store/store";
 
-const store = setupStore()
+const store = setupStore();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
