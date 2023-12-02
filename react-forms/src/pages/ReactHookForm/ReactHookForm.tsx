@@ -1,12 +1,14 @@
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import userSchema, { genderList, SelectItem, UserFormType } from "../../store/schemes/userForm";
-import { setUserData } from "../../store/reducers/formSlice";
+import userSchema, { countries, genderList, SelectItem, UserFormType } from "../../store/schemes/userForm";
+import { setUserFormData } from "../../store/reducers/formSlice";
 import { connect } from "react-redux";
 import { AppRootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
+import { setUserData } from "../../store/reducers/dataSlice";
 
 interface PropType {
+  setUserFormData: typeof setUserFormData;
   setUserData: typeof setUserData;
   userFormData: Partial<UserFormType>;
   countries: SelectItem[];
@@ -17,15 +19,22 @@ function ReactHookFormComponent(props: PropType) {
 
   console.log(props);
 
-  const { handleSubmit, formState: { errors, isValid }, control } = useForm<UserFormType>({
+  const userForm = useForm<UserFormType>({
     resolver: yupResolver<UserFormType>(userSchema),
     mode: "onChange",
+    defaultValues: props.userFormData,
   });
+
+  const { handleSubmit, formState: { errors, isValid }, control } = userForm
 
   const onSubmit = (data: UserFormType) => {
     console.log(data);
 
-    props.setUserData(data);
+    props.setUserFormData(data);
+
+    const { accept, age, country, email, gender, name, password } = data
+    const selectedCountry: string = (countries.find(v => v.value === country)?.label)!
+    props.setUserData({ accept, age, email, name, gender, password: password.first, country: selectedCountry })
 
     navigate('..');
   };
@@ -52,13 +61,13 @@ function ReactHookFormComponent(props: PropType) {
         />
 
         <Controller
-          render={({ field }) => {
+          render={({ field, fieldState, }) => {
             const id = 'name'
             return (
               <>
-                <label htmlFor={id}>{'name'}</label>
+                <label htmlFor={id}>{id}</label>
                 <input {...field} id={id} />
-                <p>{errors.name?.message}</p>
+                <p>{fieldState.error?.message}</p>
               </>
             )
           }}
@@ -67,7 +76,7 @@ function ReactHookFormComponent(props: PropType) {
           defaultValue=""
         />
 
-        <fieldset >
+        {/*  <fieldset >
           <Controller
             render={({ field }) => {
               const id = 'password_first'
@@ -102,10 +111,10 @@ function ReactHookFormComponent(props: PropType) {
 
 
         </fieldset>
-        <p>{errors.password?.message}</p>
+        <p>{errors.password?.message}</p> */}
 
-        {/* <Controller
-          render={({ field: rootField }) => {
+        <Controller
+          render={({ field: rootField, fieldState: rootFieldState }) => {
             const rootId = 'password'
             return (
               <>
@@ -142,13 +151,14 @@ function ReactHookFormComponent(props: PropType) {
                     defaultValue=""
                   />
                 </fieldset>
-                <p>{errors.password?.message}</p>
+                <p>{`${rootFieldState.invalid}`}</p>
+                <p>{rootFieldState.error?.message}</p>
               </>
             )
           }}
           name="password"
           control={control}
-        /> */}
+        />
 
         <Controller
           render={({ field }) => {
@@ -247,6 +257,6 @@ function ReactHookFormComponent(props: PropType) {
 }
 const mapState = (state: AppRootState) => ({ userFormData: state.userFormData.data, countries: state.countries.data });
 
-const ReactHookForm = connect(mapState, { setUserData })(ReactHookFormComponent);
+const ReactHookForm = connect(mapState, { setUserFormData, setUserData })(ReactHookFormComponent);
 
 export default ReactHookForm;

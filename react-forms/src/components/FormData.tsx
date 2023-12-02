@@ -2,8 +2,7 @@ import { useAppSelector } from "../store/hooks";
 import FieldData from "./FieldData";
 
 function FormData() {
-    const data = useAppSelector((state) => (state.userFormData.data));
-    // const countries = useAppSelector((state) => state.countries.data);
+    const data = useAppSelector((state) => (state.userData.data));
 
     if (data) {
         return (

@@ -13,7 +13,7 @@ const userSlice = createSlice({
   name: "userFormData",
   initialState: getInit(),
   reducers: {
-    setUserData: {
+    setUserFormData: {
       reducer: (state: UserFormData, action: PayloadAction<UserFormType>) => {
         state.data = action.payload;
       },
@@ -22,6 +22,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUserData } = userSlice.actions;
+export const { setUserFormData } = userSlice.actions;
 
 export default userSlice.reducer;

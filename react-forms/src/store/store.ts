@@ -4,10 +4,12 @@ import {
   PreloadedState,
 } from "@reduxjs/toolkit";
 import countrySlice from "./reducers/countrySlice";
+import dataSlice from "./reducers/dataSlice";
 import formSlice from "./reducers/formSlice";
 
 const rootReducer = combineReducers({
   userFormData: formSlice,
+  userData: dataSlice,
   countries: countrySlice,
 });
 
