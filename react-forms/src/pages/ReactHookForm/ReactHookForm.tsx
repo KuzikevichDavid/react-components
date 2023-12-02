@@ -18,7 +18,7 @@ function ReactHookFormComponent(props: PropType) {
   console.log(props);
 
   const { handleSubmit, formState: { errors, isValid }, control } = useForm<UserFormType>({
-    resolver: yupResolver(userSchema),
+    resolver: yupResolver<UserFormType>(userSchema),
     mode: "onChange",
   });
 
@@ -67,12 +67,49 @@ function ReactHookFormComponent(props: PropType) {
           defaultValue=""
         />
 
-        <Controller
+        <fieldset >
+          <Controller
+            render={({ field }) => {
+              const id = 'password_first'
+              return (
+                <>
+                  <label htmlFor={id}>{id}</label>
+                  <input type={"password"} {...field} id={id} />
+                  <p>{errors.password?.first?.message}</p>
+                </>
+              )
+            }}
+            name="password.first"
+            control={control}
+            defaultValue=""
+          />
+
+          <Controller
+            render={({ field }) => {
+              const id = 'repeat_password'
+              return (
+                <>
+                  <label htmlFor={id}>{'repeat password'}</label>
+                  <input type={"password"} {...field} id={id} />
+                  <p>{errors.password?.second?.message}</p>
+                </>
+              )
+            }}
+            name="password.second"
+            control={control}
+            defaultValue=""
+          />
+
+
+        </fieldset>
+        <p>{errors.password?.message}</p>
+
+        {/* <Controller
           render={({ field: rootField }) => {
             const rootId = 'password'
             return (
               <>
-                <fieldset id={rootId} /* {...rootField} */ ref={rootField.ref}>
+                <fieldset id={rootId} ref={rootField.ref}>
                   <Controller
                     render={({ field }) => {
                       const id = 'password_first'
@@ -111,7 +148,7 @@ function ReactHookFormComponent(props: PropType) {
           }}
           name="password"
           control={control}
-        />
+        /> */}
 
         <Controller
           render={({ field }) => {
