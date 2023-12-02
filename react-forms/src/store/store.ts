@@ -3,10 +3,12 @@ import {
   configureStore,
   PreloadedState,
 } from "@reduxjs/toolkit";
+import countrySlice from "./reducers/countrySlice";
 import formSlice from "./reducers/formSlice";
 
 const rootReducer = combineReducers({
   userFormData: formSlice,
+  countries: countrySlice,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<AppRootState>) => {

@@ -12,6 +12,32 @@ import { object, string, number, boolean, InferType, TestContext } from "yup";
 const defaultGender = "other";
 export const genderList = ["male", "female", defaultGender];
 
+export type SelectItem = {
+  value: string;
+  label: string;
+}
+const defaultCountry: SelectItem = {
+  label: 'Belarus',
+  value: 'BY',
+};
+
+export const countries: SelectItem[] = [{
+  label: 'Russuia',
+  value: 'RU',
+},
+{
+  label: 'Poland',
+  value: 'PL'
+},
+{
+  label: 'England',
+  value: 'EN'
+},
+  defaultCountry
+];
+
+const countyCodes = countries.map((val) => val.value)
+
 const password = string()
   .matches(/([A-Z]+)/)
   .min(8)
@@ -56,6 +82,7 @@ const userSchema = object({
   name,
   age: number().required().positive().integer().min(3).max(120),
   gender: string().oneOf(genderList).default(defaultGender),
+  country: string().oneOf(countyCodes).default(defaultCountry.value),
   accept: boolean().isTrue().required(),
 });
 

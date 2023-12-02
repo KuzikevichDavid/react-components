@@ -1,21 +1,22 @@
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import userSchema, { genderList, UserFormType } from "../../store/schemes/userForm";
+import userSchema, { genderList, SelectItem, UserFormType } from "../../store/schemes/userForm";
 import { setUserData } from "../../store/reducers/formSlice";
 import { connect } from "react-redux";
 import { AppRootState } from "../../store/store";
 
 interface PropType {
-  setUserData: typeof setUserData
+  setUserData: typeof setUserData;
+  userFormData: Partial<UserFormType>;
+  countries: SelectItem[];
 }
 
 function ReactHookFormComponent(props: PropType) {
-
   console.log(props);
 
-  const { handleSubmit, formState: { errors }, control, trigger, register } = useForm<UserFormType>({
+  const { handleSubmit, formState: { errors }, control } = useForm<UserFormType>({
     resolver: yupResolver(userSchema),
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const onSubmit = (data: UserFormType) => props.setUserData(data);
@@ -121,12 +122,31 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field }) => {
-            const id = Math.random().toString()
+            const id = 'country'
             return (
               <>
-                <label htmlFor={id}>{'repeat password'}</label>
-                <select {...field} >
-                  {genderList.map((val) => (<option value={val}>{val}</option>))}
+                <label htmlFor={id}>{id}</label>
+                <select {...field} id={id} >
+                  {props.countries.map((val) => (<option value={val.value}>{val.label}</option>))}
+                  <option value=''></option>
+                </select>
+                <p>{errors.country?.message}</p>
+              </>
+            )
+          }}
+          name="country"
+          control={control}
+          defaultValue=''
+        />
+
+        <Controller
+          render={({ field }) => {
+            const id = 'gender'
+            return (
+              <>
+                <label htmlFor={id}>{id}</label>
+                <select {...field} id={id} >
+                  {genderList.map((val) => (<option value={val} key={val}>{val}</option>))}
                   <option value=''></option>
                 </select>
                 <p>{errors.gender?.message}</p>
@@ -140,7 +160,7 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field }) => {
-            const id = Math.random().toString()
+            const id = 'accept'
             return (
               <>
                 <label htmlFor={id}>{'accept T&C'}</label>
@@ -159,7 +179,7 @@ function ReactHookFormComponent(props: PropType) {
     </>
   );
 }
-const mapState = (state: AppRootState) => state.userFormData.data;
+const mapState = (state: AppRootState) => ({ userFormData: state.userFormData.data, countries: state.countries.data });
 
 const ReactHookForm = connect(mapState, { setUserData })(ReactHookFormComponent);
 
