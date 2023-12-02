@@ -4,6 +4,7 @@ import userSchema, { genderList, SelectItem, UserFormType } from "../../store/sc
 import { setUserData } from "../../store/reducers/formSlice";
 import { connect } from "react-redux";
 import { AppRootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 interface PropType {
   setUserData: typeof setUserData;
@@ -12,14 +13,22 @@ interface PropType {
 }
 
 function ReactHookFormComponent(props: PropType) {
+  const navigate = useNavigate()
+
   console.log(props);
 
-  const { handleSubmit, formState: { errors }, control } = useForm<UserFormType>({
+  const { handleSubmit, formState: { errors, isValid }, control } = useForm<UserFormType>({
     resolver: yupResolver(userSchema),
     mode: "onChange",
   });
 
-  const onSubmit = (data: UserFormType) => props.setUserData(data);
+  const onSubmit = (data: UserFormType) => {
+    console.log(data);
+
+    props.setUserData(data);
+
+    navigate('..');
+  };
   return (
     <>
       <h1>React Hook Form</h1>
@@ -28,7 +37,7 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field }) => {
-            const id = 'Math.random().toString()'
+            const id = 'email'
             return (
               <>
                 <label htmlFor={id}>{'email'}</label>
@@ -44,7 +53,7 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field }) => {
-            const id = Math.random().toString()
+            const id = 'name'
             return (
               <>
                 <label htmlFor={id}>{'name'}</label>
@@ -59,17 +68,17 @@ function ReactHookFormComponent(props: PropType) {
         />
 
         <Controller
-          render={() => {
-            const id = Math.random().toString()
+          render={({ field: rootField }) => {
+            const rootId = 'password'
             return (
               <>
-                <div id={id} >
+                <fieldset id={rootId} /* {...rootField} */ ref={rootField.ref}>
                   <Controller
                     render={({ field }) => {
-                      const id = Math.random().toString()
+                      const id = 'password_first'
                       return (
                         <>
-                          <label htmlFor={id}>{'password'}</label>
+                          <label htmlFor={id}>{id}</label>
                           <input type={"password"} {...field} id={id} />
                           <p>{errors.password?.first?.message}</p>
                         </>
@@ -82,7 +91,7 @@ function ReactHookFormComponent(props: PropType) {
 
                   <Controller
                     render={({ field }) => {
-                      const id = Math.random().toString()
+                      const id = 'repeat_password'
                       return (
                         <>
                           <label htmlFor={id}>{'repeat password'}</label>
@@ -95,7 +104,7 @@ function ReactHookFormComponent(props: PropType) {
                     control={control}
                     defaultValue=""
                   />
-                </div>
+                </fieldset>
                 <p>{errors.password?.message}</p>
               </>
             )
@@ -106,10 +115,10 @@ function ReactHookFormComponent(props: PropType) {
 
         <Controller
           render={({ field }) => {
-            const id = Math.random().toString()
+            const id = 'age'
             return (
               <>
-                <label htmlFor={id}>{'age'}</label>
+                <label htmlFor={id}>{id}</label>
                 <input type={"number"} {...field} id={id} />
                 <p>{errors.age?.message}</p>
               </>
@@ -117,7 +126,6 @@ function ReactHookFormComponent(props: PropType) {
           }}
           name="age"
           control={control}
-          defaultValue={undefined}
         />
 
         <Controller
@@ -127,7 +135,7 @@ function ReactHookFormComponent(props: PropType) {
               <>
                 <label htmlFor={id}>{id}</label>
                 <select {...field} id={id} >
-                  {props.countries.map((val) => (<option value={val.value}>{val.label}</option>))}
+                  {props.countries.map((val) => (<option value={val.value} key={val.value}>{val.label}</option>))}
                   <option value=''></option>
                 </select>
                 <p>{errors.country?.message}</p>
@@ -158,6 +166,27 @@ function ReactHookFormComponent(props: PropType) {
           defaultValue=''
         />
 
+        {/* <Controller
+          render={({ field }) => {
+            const id = 'image'
+            return (
+              <>
+                <label htmlFor={id}>{id}</label>
+                <input type={"file"} name={field.name} onBlur={field.onBlur} onChange={field.onChange} ref={field.ref} id={id} />
+                <p>{errors.image?.message}</p>
+              </>
+            )
+          }}
+          name="image"
+          control={control}
+          defaultValue={undefined}
+        /> 
+
+        <label htmlFor={'image'}>{'image'}</label>
+        <input type={"file"} {...register('image')} id={'image'} />
+        <p>{errors.image?.message}</p>
+        */}
+
         <Controller
           render={({ field }) => {
             const id = 'accept'
@@ -173,8 +202,8 @@ function ReactHookFormComponent(props: PropType) {
           control={control}
           defaultValue={undefined}
         />
-
-        <input type="submit" />
+        <p>{errors.root?.message}</p>
+        <input type="submit" disabled={!isValid} />
       </form>
     </>
   );
