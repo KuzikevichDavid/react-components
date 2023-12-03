@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import Routes from "./routes";
 import Home from "./pages/home/Home";
-import Uncontrolled from "./pages/Uncontrolled";
+import Uncontrolled from "./pages/uncontrolled/Uncontrolled";
 import ReactHookForm from "./pages/ReactHookForm/ReactHookForm";
 
 const routes: RouteObject[] = [
