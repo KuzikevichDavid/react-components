@@ -22,10 +22,11 @@ function ReactHookFormComponent({
   setUserData,
   setUserFormData,
   userFormData,
+  ...rest
 }: PropType) {
   const navigate = useNavigate();
 
-  // console.log(props);
+  console.log(rest);
 
   const userForm = useForm<UserFormType>({
     resolver: yupResolver<UserFormType>(userSchema),

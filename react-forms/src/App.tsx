@@ -5,10 +5,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Routes from "./routes";
-import FormData from "./components/FormData";
 import Home from "./pages/home/Home";
 import Uncontrolled from "./pages/Uncontrolled";
-import ReactHookForm from "./pages/ReactHookForm/ReactHookFormComponent";
+import ReactHookForm from "./pages/ReactHookForm/ReactHookForm";
 
 const routes: RouteObject[] = [
   {
@@ -16,18 +15,14 @@ const routes: RouteObject[] = [
     element: <Home />,
     children: [
       {
-        index: true,
-        element: <FormData />,
+        path: Routes.UncontrolledComponents,
+        element: <Uncontrolled />,
+      },
+      {
+        path: Routes.ReactHookForm,
+        element: <ReactHookForm />,
       },
     ],
-  },
-  {
-    path: Routes.UncontrolledComponents,
-    element: <Uncontrolled />,
-  },
-  {
-    path: Routes.ReactHookForm,
-    element: <ReactHookForm />,
   },
 ];
 
