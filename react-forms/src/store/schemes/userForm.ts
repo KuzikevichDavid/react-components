@@ -1,14 +1,5 @@
 import { object, string, number, boolean, InferType, TestContext } from "yup";
 
-// name(validate for first uppercased letter)
-// age(should be number, no negative values)
-// email(validate for email)
-// 2 passwords(should match, display the password strength: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special character)
-// gender(you can use radio buttons or select control)
-// accept T & C(checkbox)
-// input control to upload picture(validate size and extension, allow png jpeg, save in redux store as base64)
-// autocomplete control to select country(all countries shoudl be stored in the Redux store) Form should contain labels, which should be connected with inouts(look at htmlFor)
-
 const defaultGender = "other";
 export const genderList = ["male", "female", defaultGender];
 
@@ -38,12 +29,78 @@ export const countries: SelectItem[] = [
 ];
 
 const countyCodes = countries.map((val) => val.value);
+const countryNames = countries.map((val) => val.label);
+
+const msg = "field must contain at least";
+
+const specials = ["!", "?", "@", "#", "$", "&"];
+
+const comparePredicate = (
+  value: string,
+  symbolArr: string[],
+  index: number,
+): boolean => value[index] === symbolArr[index];
+const comparePredicateLoop = (
+  value: string,
+  symbolArr: string[],
+  index: number,
+): boolean => symbolArr.includes(value[index]);
+
+type Predicate = typeof comparePredicate;
+
+const testContainSymbol = (
+  value: string,
+  context: TestContext,
+  symbolArr: string[],
+  predicate: Predicate,
+  message: string,
+) => {
+  let isValid = false;
+  for (let index = 0; index < value.length; index += 1) {
+    if (predicate(value, symbolArr, index)) {
+      isValid = true;
+      break;
+    }
+  }
+  if (!isValid) return context.createError({ message });
+  return isValid;
+};
 
 const password = string()
-  .matches(/([A-Z]+)/)
   .min(8)
   .max(32)
-  .required();
+  .required()
+  .matches(/([0-9]+)/, `${msg} 1 number`)
+  .test({
+    test: (value: string, context: TestContext) =>
+      testContainSymbol(
+        value,
+        context,
+        value.toLowerCase().split(""),
+        comparePredicate,
+        `${msg} 1 lowercased letter`,
+      ),
+  })
+  .test({
+    test: (value: string, context: TestContext) =>
+      testContainSymbol(
+        value,
+        context,
+        value.toUpperCase().split(""),
+        comparePredicate,
+        `${msg} 1 uppercased letter`,
+      ),
+  })
+  .test({
+    test: (value: string, context: TestContext) =>
+      testContainSymbol(
+        value,
+        context,
+        specials,
+        comparePredicateLoop,
+        `${msg} 1 special character in list: ${specials}`,
+      ),
+  });
 
 const passwordObject = object().shape({
   first: password,
@@ -85,8 +142,12 @@ const userSchema = object({
   name,
   age: number().required().positive().integer().min(3).max(120),
   gender: string().oneOf(genderList).default(defaultGender),
-  country: string().oneOf(countyCodes).default(defaultCountry.value),
-  accept: boolean().isTrue().required(),
+  country: string()
+    .oneOf(countyCodes, `Country value must be in ${countryNames}`)
+    .default(defaultCountry.value),
+  accept: boolean()
+    .isTrue("To continue you must agry with term and cont")
+    .required(),
 });
 
 export type UserFormType = InferType<typeof userSchema>;

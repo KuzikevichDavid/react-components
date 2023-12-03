@@ -179,7 +179,7 @@ function Uncontrolled() {
               ref: passRepeatRef,
             }}
           />
-          <p role={"alert"} ref={passMsgRef} />
+          <p role="alert" ref={passMsgRef} />
         </fieldset>
         <Input
           prop={{
@@ -218,7 +218,7 @@ function Uncontrolled() {
             <option value="" />
           </select>
         </label>
-        <p role={"alert"} ref={countryMsgRef} />
+        <p role="alert" ref={countryMsgRef} />
 
         <label htmlFor="gender">
           geder
@@ -236,7 +236,7 @@ function Uncontrolled() {
             <option value="" />
           </select>
         </label>
-        <p role={"alert"} ref={genderMsgRef} />
+        <p role="alert" ref={genderMsgRef} />
 
         <Input
           prop={{

@@ -53,7 +53,7 @@ function ReactHookFormComponent({
       gender,
       password: password.first,
       country: selectedCountryLabel,
-      image: ''
+      image: "",
     });
 
     navigate("..");
@@ -70,7 +70,7 @@ function ReactHookFormComponent({
               <>
                 <label htmlFor={id}>email</label>
                 <input {...field} id={id} />
-                <p>{errors.email?.message}</p>
+                <p role="alert">{errors.email?.message}</p>
               </>
             );
           }}
@@ -86,7 +86,7 @@ function ReactHookFormComponent({
               <>
                 <label htmlFor={id}>{id}</label>
                 <input {...field} id={id} />
-                <p>{fieldState.error?.message}</p>
+                <p role="alert">{fieldState.error?.message}</p>
               </>
             );
           }}
@@ -94,43 +94,6 @@ function ReactHookFormComponent({
           control={control}
           defaultValue=""
         />
-
-        {/*  <fieldset >
-          <Controller
-            render={({ field }) => {
-              const id = 'password_first'
-              return (
-                <>
-                  <label htmlFor={id}>{id}</label>
-                  <input type={"password"} {...field} id={id} />
-                  <p>{errors.password?.first?.message}</p>
-                </>
-              )
-            }}
-            name="password.first"
-            control={control}
-            defaultValue=""
-          />
-
-          <Controller
-            render={({ field }) => {
-              const id = 'repeat_password'
-              return (
-                <>
-                  <label htmlFor={id}>{'repeat password'}</label>
-                  <input type={"password"} {...field} id={id} />
-                  <p>{errors.password?.second?.message}</p>
-                </>
-              )
-            }}
-            name="password.second"
-            control={control}
-            defaultValue=""
-          />
-
-
-        </fieldset>
-        <p>{errors.password?.message}</p> */}
 
         <Controller
           render={({ field: rootField, fieldState: rootFieldState }) => {
@@ -145,7 +108,7 @@ function ReactHookFormComponent({
                         <>
                           <label htmlFor={id}>{id}</label>
                           <input type="password" {...field} id={id} />
-                          <p>{errors.password?.first?.message}</p>
+                          <p role="alert">{errors.password?.first?.message}</p>
                         </>
                       );
                     }}
@@ -161,7 +124,7 @@ function ReactHookFormComponent({
                         <>
                           <label htmlFor={id}>repeat password</label>
                           <input type="password" {...field} id={id} />
-                          <p>{errors.password?.second?.message}</p>
+                          <p role="alert">{errors.password?.second?.message}</p>
                         </>
                       );
                     }}
@@ -170,8 +133,7 @@ function ReactHookFormComponent({
                     defaultValue=""
                   />
                 </fieldset>
-                <p>{`${rootFieldState.invalid}`}</p>
-                <p>{rootFieldState.error?.message}</p>
+                <p role="alert">{rootFieldState.error?.message}</p>
               </>
             );
           }}
@@ -186,7 +148,7 @@ function ReactHookFormComponent({
               <>
                 <label htmlFor={id}>{id}</label>
                 <input type="number" {...field} id={id} />
-                <p>{errors.age?.message}</p>
+                <p role="alert">{errors.age?.message}</p>
               </>
             );
           }}
@@ -208,7 +170,7 @@ function ReactHookFormComponent({
                   ))}
                   <option value="" />
                 </select>
-                <p>{errors.country?.message}</p>
+                <p role="alert">{errors.country?.message}</p>
               </>
             );
           }}
@@ -231,7 +193,7 @@ function ReactHookFormComponent({
                   ))}
                   <option value="" />
                 </select>
-                <p>{errors.gender?.message}</p>
+                <p role="alert">{errors.gender?.message}</p>
               </>
             );
           }}
@@ -240,27 +202,6 @@ function ReactHookFormComponent({
           defaultValue=""
         />
 
-        {/* <Controller
-          render={({ field }) => {
-            const id = 'image'
-            return (
-              <>
-                <label htmlFor={id}>{id}</label>
-                <input type={"file"} name={field.name} onBlur={field.onBlur} onChange={field.onChange} ref={field.ref} id={id} />
-                <p>{errors.image?.message}</p>
-              </>
-            )
-          }}
-          name="image"
-          control={control}
-          defaultValue={undefined}
-        /> 
-
-        <label htmlFor={'image'}>{'image'}</label>
-        <input type={"file"} {...register('image')} id={'image'} />
-        <p>{errors.image?.message}</p>
-        */}
-
         <Controller
           render={({ field }) => {
             const id = "accept";
@@ -268,7 +209,7 @@ function ReactHookFormComponent({
               <>
                 <label htmlFor={id}>accept T&C</label>
                 <input type="checkbox" {...field} id={id} />
-                <p>{errors.accept?.message}</p>
+                <p role="alert">{errors.accept?.message}</p>
               </>
             );
           }}
@@ -276,7 +217,7 @@ function ReactHookFormComponent({
           control={control}
           defaultValue={undefined}
         />
-        <p>{errors.root?.message}</p>
+        <p role="alert">{errors.root?.message}</p>
         <input type="submit" disabled={!isValid} />
       </form>
     </>

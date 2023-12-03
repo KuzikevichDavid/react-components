@@ -1,4 +1,3 @@
-import { encode } from "base-64";
 import { countries } from "./store/schemes/userForm";
 import { UserFormWithFileType } from "./store/schemes/userFormWithFile";
 
@@ -19,10 +18,12 @@ export const mapData = async (data: UserFormWithFileType) => {
   const { accept, age, country, email, gender, name, password, image } = data;
   const selectedCountry = countries.find((v) => v.value === country);
   const selectedCountryLabel = selectedCountry ? selectedCountry.label : "";
-  const files = await Promise.all((image.files as Array<File>).map(async (file) => {
-    const res = await convertToBase64(file) as string
-    return res
-  }))
+  const files = await Promise.all(
+    (image.files as File[]).map(async (file) => {
+      const res = (await convertToBase64(file)) as string;
+      return res;
+    }),
+  );
   return {
     accept,
     age,
@@ -31,6 +32,6 @@ export const mapData = async (data: UserFormWithFileType) => {
     gender,
     password: password.first,
     country: selectedCountryLabel,
-    image: files.length > 0 ? files[0] : '',
+    image: files.length > 0 ? files[0] : "",
   };
 };
