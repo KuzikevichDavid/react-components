@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserFormType } from "../schemes/userForm";
+import { UserFormWithFileType } from "../schemes/userFormWithFile";
 
 export type UserDataType = {
   password: string;
-} & Omit<UserFormType, "password">;
+  image: string;
+} & Omit<UserFormWithFileType, "password" | "image">;
 
 export interface UserData {
   data: Partial<UserDataType>;

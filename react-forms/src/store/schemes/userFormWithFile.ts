@@ -1,14 +1,14 @@
-import { object, array, TestContext } from "yup";
+import { object, array, TestContext, InferType } from "yup";
 import userSchema from "./userForm";
 
 export const imageExt = ["image/png", "image/jpeg"];
 
-function checkIfFilesAreTooBig(files: [File], context: TestContext) {
+function checkIfFilesAreTooBig(files: File[], context: TestContext) {
   let isValid = true;
   if (files) {
     files.map((file) => {
       const size = file.size / 1024 / 1024;
-      if (size <= 2) {
+      if (size > 2) {
         isValid = false;
       }
     });
@@ -17,7 +17,7 @@ function checkIfFilesAreTooBig(files: [File], context: TestContext) {
   return isValid;
 }
 
-function checkIfFilesAreCorrectType(files: [File], context: TestContext) {
+function checkIfFilesAreCorrectType(files: File[], context: TestContext) {
   let isValid = true;
   if (files) {
     files.map((file) => {
@@ -27,7 +27,7 @@ function checkIfFilesAreCorrectType(files: [File], context: TestContext) {
     });
 
     if (!isValid)
-      return context.createError({ message: "unsupported file type" });
+      return context.createError({ message: `unsupported file type mas be in: ${imageExt}` });
   }
   return isValid;
 }
@@ -41,5 +41,7 @@ const userSchemaWithFile = userSchema.shape({
       .test("is-big-file", checkIfFilesAreTooBig),
   }),
 });
+
+export type UserFormWithFileType = InferType<typeof userSchemaWithFile>;
 
 export default userSchemaWithFile;

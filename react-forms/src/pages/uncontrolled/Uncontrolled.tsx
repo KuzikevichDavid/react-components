@@ -1,7 +1,7 @@
 import { FormEvent, RefObject, useRef } from "react";
 import { ValidationError } from "yup";
 import { useNavigate } from "react-router-dom";
-import userSchema, { genderList } from "../../store/schemes/userForm";
+import { genderList } from "../../store/schemes/userForm";
 import Input from "./Input";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setUserFormData } from "../../store/reducers/formSlice";
@@ -17,11 +17,11 @@ function Uncontrolled() {
   const nameMsgRef = useRef<HTMLParagraphElement>(null);
 
   const passwordRef = useRef<HTMLInputElement>(null);
-
   const passwordMsgRef = useRef<HTMLParagraphElement>(null);
-  const passRepeatRef = useRef<HTMLInputElement>(null);
 
+  const passRepeatRef = useRef<HTMLInputElement>(null);
   const passRepeatMsgRef = useRef<HTMLParagraphElement>(null);
+
   const passMsgRef = useRef<HTMLParagraphElement>(null);
 
   const ageRef = useRef<HTMLInputElement>(null);
@@ -57,6 +57,7 @@ function Uncontrolled() {
     nameMsgRef,
     passRepeatMsgRef,
     passwordMsgRef,
+    passMsgRef,
     ageMsgRef,
     genderMsgRef,
     countryMsgRef,
@@ -73,7 +74,7 @@ function Uncontrolled() {
 
     // reset errors
     msgRefs.forEach((val) => {
-      if (val.current) val.current.textContent = "";
+      if (val.current) val.current.replaceChildren("");
     });
 
     const fileList = imageRef.current?.files;
@@ -104,7 +105,7 @@ function Uncontrolled() {
         abortEarly: false,
       });
       dispatch(setUserFormData(res));
-      dispatch(setUserData(mapData(res)));
+      dispatch(setUserData(await mapData(res)));
       navigate("..");
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -178,7 +179,7 @@ function Uncontrolled() {
               ref: passRepeatRef,
             }}
           />
-          <p ref={passMsgRef} />
+          <p role={"alert"} ref={passMsgRef} />
         </fieldset>
         <Input
           prop={{
@@ -188,16 +189,6 @@ function Uncontrolled() {
             name: "age",
             msgRef: ageMsgRef,
             ref: ageRef,
-          }}
-        />
-        <Input
-          prop={{
-            type: "checkbox",
-            inputId: "accept",
-            label: "accept T&C",
-            name: "accept",
-            msgRef: acceptMsgRef,
-            ref: acceptRef,
           }}
         />
         <Input
@@ -227,7 +218,7 @@ function Uncontrolled() {
             <option value="" />
           </select>
         </label>
-        <p ref={countryMsgRef} />
+        <p role={"alert"} ref={countryMsgRef} />
 
         <label htmlFor="gender">
           geder
@@ -245,7 +236,18 @@ function Uncontrolled() {
             <option value="" />
           </select>
         </label>
-        <p ref={genderMsgRef} />
+        <p role={"alert"} ref={genderMsgRef} />
+
+        <Input
+          prop={{
+            type: "checkbox",
+            inputId: "accept",
+            label: "accept T&C",
+            name: "accept",
+            msgRef: acceptMsgRef,
+            ref: acceptRef,
+          }}
+        />
 
         <button type="submit">Submit form</button>
       </form>

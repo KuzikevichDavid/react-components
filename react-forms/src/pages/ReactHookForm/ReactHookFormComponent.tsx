@@ -53,6 +53,7 @@ function ReactHookFormComponent({
       gender,
       password: password.first,
       country: selectedCountryLabel,
+      image: ''
     });
 
     navigate("..");

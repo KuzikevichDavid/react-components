@@ -24,7 +24,7 @@ function UncontrolledInput({
         ref={ref}
         autoComplete={name}
       />
-      <p ref={msgRef} />
+      <p role={"alert"} ref={msgRef} />
     </>
   );
 }
