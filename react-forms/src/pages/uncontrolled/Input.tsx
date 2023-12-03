@@ -17,7 +17,13 @@ function UncontrolledInput({
   return (
     <>
       <label htmlFor={inputId}>{label}</label>
-      <input type={type} id={inputId} name={name} ref={ref} />
+      <input
+        type={type}
+        id={inputId}
+        name={name}
+        ref={ref}
+        autoComplete={name}
+      />
       <p ref={msgRef} />
     </>
   );

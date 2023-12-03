@@ -39,33 +39,6 @@ export const countries: SelectItem[] = [
 
 const countyCodes = countries.map((val) => val.value);
 
-// const imageExt = ['png', 'jpeg']
-/* 
-function checkIfFilesAreTooBig(files?: [File]): boolean {
-  let valid = true
-  if (files) {
-    files.map(file => {
-      const size = file.size / 1024 / 1024
-      if (size > 10) {
-        valid = false
-      }
-    })
-  }
-  return valid
-}
-
-function checkIfFilesAreCorrectType(files?: [File]): boolean {
-  let valid = true
-  if (files) {
-    files.map(file => {
-      if (!['image/jpeg', 'image/png'].includes(file.type)) {
-        valid = false
-      }
-    })
-  }
-  return valid
-} */
-
 const password = string()
   .matches(/([A-Z]+)/)
   .min(8)
@@ -113,17 +86,6 @@ const userSchema = object({
   age: number().required().positive().integer().min(3).max(120),
   gender: string().oneOf(genderList).default(defaultGender),
   country: string().oneOf(countyCodes).default(defaultCountry.value),
-  /* image: object().shape({
-    files: array()
-      .nullable()
-      .required('VALIDATION_FIELD_REQUIRED')
-      .test('is-correct-file', 'VALIDATION_FIELD_FILE_BIG', checkIfFilesAreTooBig)
-      .test(
-        'is-big-file',
-        'VALIDATION_FIELD_FILE_WRONG_TYPE',
-        checkIfFilesAreCorrectType
-      ),
-  }), */
   accept: boolean().isTrue().required(),
 });
 
