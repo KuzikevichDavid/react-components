@@ -1,0 +1,8 @@
+.data-field {
+    display: flex;
+    max-width: 300px;
+}
+
+.data-field :last-child {
+    padding-left: 3px;
+}
